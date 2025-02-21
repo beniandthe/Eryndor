@@ -1,0 +1,107 @@
+<?xml version="1.0" encoding="utf-8"?>
+<Project ToolsVersion="17.0" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
+  <ItemGroup>
+    <None Include="..\..\StrategyRPG.uproject" />
+    <Filter Include="Source">
+      <UniqueIdentifier>{F31BBDD1-B3E8-3BCC-9652-680E16935819}</UniqueIdentifier>
+    </Filter>
+    <Filter Include="Source\StrategyRPG">
+      <UniqueIdentifier>{B4020131-282F-3F6F-9BDF-D44AF5C15FF3}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Source\StrategyRPG\StrategyRPG.Target.cs">
+      <Filter>Source\StrategyRPG</Filter>
+    </None>
+    <None Include="..\..\Source\StrategyRPG\StrategyRPGEditor.Target.cs">
+      <Filter>Source\StrategyRPG</Filter>
+    </None>
+    <None Include="..\..\.gitattributes" />
+    <None Include="..\..\.gitignore" />
+    <None Include="..\..\.vsconfig" />
+    <None Include="..\..\README.md" />
+    <Filter Include="Config">
+      <UniqueIdentifier>{FA535FFB-25E1-3D20-B416-52F9BE21E06E}</UniqueIdentifier>
+    </Filter>
+    <None Include="..\..\Config\DefaultEditor.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEditorPerProjectUserSettings.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultEngine.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultGame.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Config\DefaultInput.ini">
+      <Filter>Config</Filter>
+    </None>
+    <None Include="..\..\Source\StrategyRPG\StrategyRPG.Build.cs">
+      <Filter>Source\StrategyRPG</Filter>
+    </None>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPG.cpp">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPG.h">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPGCharacter.cpp">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPGCharacter.h">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPGGameMode.cpp">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPGGameMode.h">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPGPlayerController.cpp">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\StrategyRPGPlayerController.h">
+      <Filter>Source\StrategyRPG</Filter>
+    </ClCompile>
+    <Filter Include="Source\StrategyRPG\Private">
+      <UniqueIdentifier>{D12FF939-8607-3CC9-A277-FBF3AF77915A}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridManager.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AHero.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\GridTile.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+    <Filter Include="Source\StrategyRPG\Public">
+      <UniqueIdentifier>{92AA3517-C28C-37F5-9891-D2FEE3A31613}</UniqueIdentifier>
+    </Filter>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\AGridManager.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\AHero.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\FactionTypes.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\GridTile.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\HeroTypes.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+  </ItemGroup>
+  <ItemGroup>
+    <ClInclude Include="..\..\Source\StrategyRPG\Public\AGridUnit.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClInclude>
+  </ItemGroup>
+  <ItemGroup>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridUnit.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+  </ItemGroup>
+</Project>

@@ -1,0 +1,14 @@
+{
+	"Targets": [
+		{
+			"Name": "StrategyRPG",
+			"Path": "..\\Source\\StrategyRPG\\StrategyRPG.Target.cs",
+			"Type": "Game"
+		},
+		{
+			"Name": "StrategyRPGEditor",
+			"Path": "..\\Source\\StrategyRPG\\StrategyRPGEditor.Target.cs",
+			"Type": "Editor"
+		}
+	]
+}
