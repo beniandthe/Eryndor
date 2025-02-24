@@ -17,7 +17,7 @@ void EmptyLinkFunctionForGeneratedCodeStrategyRPG_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0xB2DE6485,
+				0x3FC1CF62,
 				0x3526D098,
 				METADATA_PARAMS(0, nullptr)
 			};
@@ -25,5 +25,5 @@ void EmptyLinkFunctionForGeneratedCodeStrategyRPG_init() {}
 		}
 		return Z_Registration_Info_UPackage__Script_StrategyRPG.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_StrategyRPG(Z_Construct_UPackage__Script_StrategyRPG, TEXT("/Script/StrategyRPG"), Z_Registration_Info_UPackage__Script_StrategyRPG, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0xB2DE6485, 0x3526D098));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_StrategyRPG(Z_Construct_UPackage__Script_StrategyRPG, TEXT("/Script/StrategyRPG"), Z_Registration_Info_UPackage__Script_StrategyRPG, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x3FC1CF62, 0x3526D098));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

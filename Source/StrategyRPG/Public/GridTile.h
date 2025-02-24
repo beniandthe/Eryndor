@@ -26,6 +26,9 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
     int32 GridY;
 
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
+    FVector GridPosition;
+
     // Whether the tile is occupied by a unit
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
     bool bIsOccupied;

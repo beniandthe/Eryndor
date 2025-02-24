@@ -137,5 +137,28 @@ public:
     /** Movement Function */
     UFUNCTION(BlueprintCallable, Category = "Movement")
     void MoveToTile(AGridTile* TargetTile);
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
+    int32 MovementRange = 5;
+
+
+
+    /** Override Click Event */
+    virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
+
+	virtual void Tick(float DeltaTime) override;
+
+    // function handle mouse click movement
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void HandleClickMovement();
+
+    // Function to move the character to the clicked destination */
+	UFUNCTION(BlueprintCallable, Category = "Movement")
+	void MoveToLocation(const FVector& Destination); 
+
+    private:
+		/** Reference to the player controller */
+		APlayerController* PlayerController;
+
 };
 

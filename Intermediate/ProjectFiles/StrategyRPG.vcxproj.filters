@@ -69,6 +69,9 @@
     <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridManager.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridUnit.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Private\AHero.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
@@ -79,6 +82,9 @@
       <UniqueIdentifier>{92AA3517-C28C-37F5-9891-D2FEE3A31613}</UniqueIdentifier>
     </Filter>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\AGridManager.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\AGridUnit.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\AHero.h">
@@ -92,16 +98,6 @@
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\HeroTypes.h">
       <Filter>Source\StrategyRPG\Public</Filter>
-    </ClCompile>
-  </ItemGroup>
-  <ItemGroup>
-    <ClInclude Include="..\..\Source\StrategyRPG\Public\AGridUnit.h">
-      <Filter>Source\StrategyRPG\Public</Filter>
-    </ClInclude>
-  </ItemGroup>
-  <ItemGroup>
-    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridUnit.cpp">
-      <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
   </ItemGroup>
 </Project>

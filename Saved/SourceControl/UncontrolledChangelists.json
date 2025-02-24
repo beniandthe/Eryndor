@@ -1,0 +1,15 @@
+{
+	"version": 1,
+	"changelists": [
+		{
+			"guid": "00000000000000000000000000000000",
+			"description": "Default Uncontrolled Changelist",
+			"files": [
+				"C:/Users/rossm/Downloads/Eryndor-Shattered-Essence-master/Eryndor-Shattered-Essence-master/Content/__ExternalActors__/TopDown/Maps/TopDownMap/4/J4/VGQQK4EZ0LQLRUTR3SJOAQ.uasset",
+				"C:/Users/rossm/Downloads/Eryndor-Shattered-Essence-master/Eryndor-Shattered-Essence-master/Content/TopDown/Blueprints/MyGridManager.uasset",
+				"C:/Users/rossm/Downloads/Eryndor-Shattered-Essence-master/Eryndor-Shattered-Essence-master/Content/TopDown/Blueprints/BP_Hero.uasset",
+				"C:/Users/rossm/Downloads/Eryndor-Shattered-Essence-master/Eryndor-Shattered-Essence-master/Content/TopDown/Blueprints/BP_TopDownCharacter.uasset"
+			]
+		}
+	]
+}

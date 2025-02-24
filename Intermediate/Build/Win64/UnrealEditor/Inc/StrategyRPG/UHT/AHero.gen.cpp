@@ -10,6 +10,7 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeAHero() {}
 
 // Begin Cross Module References
+COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_ACharacter();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridTile_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AHero();
@@ -55,6 +56,42 @@ DEFINE_FUNCTION(AHero::execCalculateDerivedStats)
 	P_NATIVE_END;
 }
 // End Class AHero Function CalculateDerivedStats
+
+// Begin Class AHero Function HandleClickMovement
+struct Z_Construct_UFunction_AHero_HandleClickMovement_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// function handle mouse click movement\n" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "function handle mouse click movement" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHero_HandleClickMovement_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHero, nullptr, "HandleClickMovement", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_HandleClickMovement_Statics::Function_MetaDataParams), Z_Construct_UFunction_AHero_HandleClickMovement_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_AHero_HandleClickMovement()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AHero_HandleClickMovement_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AHero::execHandleClickMovement)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->HandleClickMovement();
+	P_NATIVE_END;
+}
+// End Class AHero Function HandleClickMovement
 
 // Begin Class AHero Function ModifyAttribute
 struct Z_Construct_UFunction_AHero_ModifyAttribute_Statics
@@ -103,6 +140,58 @@ DEFINE_FUNCTION(AHero::execModifyAttribute)
 	P_NATIVE_END;
 }
 // End Class AHero Function ModifyAttribute
+
+// Begin Class AHero Function MoveToLocation
+struct Z_Construct_UFunction_AHero_MoveToLocation_Statics
+{
+	struct Hero_eventMoveToLocation_Parms
+	{
+		FVector Destination;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Function to move the character to the clicked destination */\n" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Function to move the character to the clicked destination */" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Destination_MetaData[] = {
+		{ "NativeConst", "" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Destination;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AHero_MoveToLocation_Statics::NewProp_Destination = { "Destination", nullptr, (EPropertyFlags)0x0010000008000182, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(Hero_eventMoveToLocation_Parms, Destination), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Destination_MetaData), NewProp_Destination_MetaData) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AHero_MoveToLocation_Statics::NewProp_Destination,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHero_MoveToLocation_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHero, nullptr, "MoveToLocation", nullptr, nullptr, Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers), sizeof(Z_Construct_UFunction_AHero_MoveToLocation_Statics::Hero_eventMoveToLocation_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04C20401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToLocation_Statics::Function_MetaDataParams), Z_Construct_UFunction_AHero_MoveToLocation_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AHero_MoveToLocation_Statics::Hero_eventMoveToLocation_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AHero_MoveToLocation()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AHero_MoveToLocation_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AHero::execMoveToLocation)
+{
+	P_GET_STRUCT_REF(FVector,Z_Param_Out_Destination);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->MoveToLocation(Z_Param_Out_Destination);
+	P_NATIVE_END;
+}
+// End Class AHero Function MoveToLocation
 
 // Begin Class AHero Function MoveToTile
 struct Z_Construct_UFunction_AHero_MoveToTile_Statics
@@ -208,7 +297,9 @@ void AHero::StaticRegisterNativesAHero()
 	UClass* Class = AHero::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
 		{ "CalculateDerivedStats", &AHero::execCalculateDerivedStats },
+		{ "HandleClickMovement", &AHero::execHandleClickMovement },
 		{ "ModifyAttribute", &AHero::execModifyAttribute },
+		{ "MoveToLocation", &AHero::execMoveToLocation },
 		{ "MoveToTile", &AHero::execMoveToTile },
 		{ "SetCurrentTile", &AHero::execSetCurrentTile },
 	};
@@ -445,6 +536,10 @@ struct Z_Construct_UClass_AHero_Statics
 		{ "ToolTip", "Current Grid Tile Reference" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MovementRange_MetaData[] = {
+		{ "Category", "Movement" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Strength;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Dexterity;
@@ -481,11 +576,14 @@ struct Z_Construct_UClass_AHero_Statics
 	static const UECodeGen_Private::FBytePropertyParams NewProp_HeroClass_Underlying;
 	static const UECodeGen_Private::FEnumPropertyParams NewProp_HeroClass;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CurrentTile;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_MovementRange;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AHero_CalculateDerivedStats, "CalculateDerivedStats" }, // 792913569
+		{ &Z_Construct_UFunction_AHero_HandleClickMovement, "HandleClickMovement" }, // 2180370600
 		{ &Z_Construct_UFunction_AHero_ModifyAttribute, "ModifyAttribute" }, // 2751578710
+		{ &Z_Construct_UFunction_AHero_MoveToLocation, "MoveToLocation" }, // 2273200250
 		{ &Z_Construct_UFunction_AHero_MoveToTile, "MoveToTile" }, // 1504133248
 		{ &Z_Construct_UFunction_AHero_SetCurrentTile, "SetCurrentTile" }, // 3795983959
 	};
@@ -530,6 +628,7 @@ const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_AHero_Statics::N
 const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_AHero_Statics::NewProp_HeroClass_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_HeroClass = { "HeroClass", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, HeroClass), Z_Construct_UEnum_StrategyRPG_EHeroClass, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HeroClass_MetaData), NewProp_HeroClass_MetaData) }; // 158982506
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_CurrentTile = { "CurrentTile", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, CurrentTile), Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CurrentTile_MetaData), NewProp_CurrentTile_MetaData) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_MovementRange = { "MovementRange", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, MovementRange), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MovementRange_MetaData), NewProp_MovementRange_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AHero_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_Strength,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_Dexterity,
@@ -566,6 +665,7 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AHero_Sta
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_HeroClass_Underlying,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_HeroClass,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_CurrentTile,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_MovementRange,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AHero_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AHero_Statics::DependentSingletons[])() = {
@@ -608,10 +708,10 @@ AHero::~AHero() {}
 struct Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AHero, AHero::StaticClass, TEXT("AHero"), &Z_Registration_Info_UClass_AHero, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AHero), 767100753U) },
+		{ Z_Construct_UClass_AHero, AHero::StaticClass, TEXT("AHero"), &Z_Registration_Info_UClass_AHero, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AHero), 2195675631U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_1788320891(TEXT("/Script/StrategyRPG"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_3007567806(TEXT("/Script/StrategyRPG"),
 	Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

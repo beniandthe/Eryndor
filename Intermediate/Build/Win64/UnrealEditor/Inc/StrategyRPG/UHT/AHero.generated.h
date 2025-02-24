@@ -16,6 +16,8 @@ class AGridTile;
 #define STRATEGYRPG_AHero_generated_h
 
 #define FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_13_RPC_WRAPPERS_NO_PURE_DECLS \
+	DECLARE_FUNCTION(execMoveToLocation); \
+	DECLARE_FUNCTION(execHandleClickMovement); \
 	DECLARE_FUNCTION(execMoveToTile); \
 	DECLARE_FUNCTION(execSetCurrentTile); \
 	DECLARE_FUNCTION(execModifyAttribute); \
