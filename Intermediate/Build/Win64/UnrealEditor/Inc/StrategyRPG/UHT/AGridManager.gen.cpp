@@ -171,8 +171,7 @@ struct Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics
 {
 	struct GridManager_eventHighlightValidMoves_Parms
 	{
-		AHero* Unit;
-		int32 MoveRange;
+		AHero* Hero;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
@@ -186,16 +185,13 @@ struct Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics
 #endif
 	};
 #endif // WITH_METADATA
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_Unit;
-	static const UECodeGen_Private::FIntPropertyParams NewProp_MoveRange;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_Hero;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::NewProp_Unit = { "Unit", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventHighlightValidMoves_Parms, Unit), Z_Construct_UClass_AHero_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::NewProp_MoveRange = { "MoveRange", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventHighlightValidMoves_Parms, MoveRange), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::NewProp_Hero = { "Hero", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventHighlightValidMoves_Parms, Hero), Z_Construct_UClass_AHero_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::NewProp_Unit,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::NewProp_MoveRange,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::NewProp_Hero,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::PropPointers) < 2048);
 const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "HighlightValidMoves", nullptr, nullptr, Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::GridManager_eventHighlightValidMoves_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_HighlightValidMoves_Statics::Function_MetaDataParams) };
@@ -211,11 +207,10 @@ UFunction* Z_Construct_UFunction_AGridManager_HighlightValidMoves()
 }
 DEFINE_FUNCTION(AGridManager::execHighlightValidMoves)
 {
-	P_GET_OBJECT(AHero,Z_Param_Unit);
-	P_GET_PROPERTY(FIntProperty,Z_Param_MoveRange);
+	P_GET_OBJECT(AHero,Z_Param_Hero);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->HighlightValidMoves(Z_Param_Unit,Z_Param_MoveRange);
+	P_THIS->HighlightValidMoves(Z_Param_Hero);
 	P_NATIVE_END;
 }
 // End Class AGridManager Function HighlightValidMoves
@@ -274,60 +269,6 @@ DEFINE_FUNCTION(AGridManager::execMoveHeroToTile)
 }
 // End Class AGridManager Function MoveHeroToTile
 
-// Begin Class AGridManager Function MoveUnitToTile
-struct Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics
-{
-	struct GridManager_eventMoveUnitToTile_Parms
-	{
-		AGridUnit* Unit;
-		AGridTile* TargetTile;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Unit" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/** Moves the selected unit to the target tile */" },
-#endif
-		{ "ModuleRelativePath", "Public/AGridManager.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Moves the selected unit to the target tile" },
-#endif
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_Unit;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_TargetTile;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::NewProp_Unit = { "Unit", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventMoveUnitToTile_Parms, Unit), Z_Construct_UClass_AGridUnit_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::NewProp_TargetTile = { "TargetTile", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventMoveUnitToTile_Parms, TargetTile), Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::NewProp_Unit,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::NewProp_TargetTile,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "MoveUnitToTile", nullptr, nullptr, Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::GridManager_eventMoveUnitToTile_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::Function_MetaDataParams) };
-static_assert(sizeof(Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::GridManager_eventMoveUnitToTile_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_AGridManager_MoveUnitToTile()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_MoveUnitToTile_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(AGridManager::execMoveUnitToTile)
-{
-	P_GET_OBJECT(AGridUnit,Z_Param_Unit);
-	P_GET_OBJECT(AGridTile,Z_Param_TargetTile);
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->MoveUnitToTile(Z_Param_Unit,Z_Param_TargetTile);
-	P_NATIVE_END;
-}
-// End Class AGridManager Function MoveUnitToTile
-
 // Begin Class AGridManager Function SelectHero
 struct Z_Construct_UFunction_AGridManager_SelectHero_Statics
 {
@@ -377,168 +318,6 @@ DEFINE_FUNCTION(AGridManager::execSelectHero)
 }
 // End Class AGridManager Function SelectHero
 
-// Begin Class AGridManager Function SelectUnit
-struct Z_Construct_UFunction_AGridManager_SelectUnit_Statics
-{
-	struct GridManager_eventSelectUnit_Parms
-	{
-		AGridUnit* Unit;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Unit" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/** Selects a unit when clicked */" },
-#endif
-		{ "ModuleRelativePath", "Public/AGridManager.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Selects a unit when clicked" },
-#endif
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_Unit;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_SelectUnit_Statics::NewProp_Unit = { "Unit", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventSelectUnit_Parms, Unit), Z_Construct_UClass_AGridUnit_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_SelectUnit_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_SelectUnit_Statics::NewProp_Unit,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SelectUnit_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_SelectUnit_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "SelectUnit", nullptr, nullptr, Z_Construct_UFunction_AGridManager_SelectUnit_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SelectUnit_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_SelectUnit_Statics::GridManager_eventSelectUnit_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SelectUnit_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_SelectUnit_Statics::Function_MetaDataParams) };
-static_assert(sizeof(Z_Construct_UFunction_AGridManager_SelectUnit_Statics::GridManager_eventSelectUnit_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_AGridManager_SelectUnit()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_SelectUnit_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(AGridManager::execSelectUnit)
-{
-	P_GET_OBJECT(AGridUnit,Z_Param_Unit);
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->SelectUnit(Z_Param_Unit);
-	P_NATIVE_END;
-}
-// End Class AGridManager Function SelectUnit
-
-// Begin Class AGridManager Function SpawnUnitAtTile
-struct Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics
-{
-	struct GridManager_eventSpawnUnitAtTile_Parms
-	{
-		AGridTile* TargetTile;
-		TSubclassOf<AGridUnit> UnitClass;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Grid" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/** Spawns a unit at a selected tile */" },
-#endif
-		{ "ModuleRelativePath", "Public/AGridManager.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Spawns a unit at a selected tile" },
-#endif
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_TargetTile;
-	static const UECodeGen_Private::FClassPropertyParams NewProp_UnitClass;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::NewProp_TargetTile = { "TargetTile", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventSpawnUnitAtTile_Parms, TargetTile), Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FClassPropertyParams Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::NewProp_UnitClass = { "UnitClass", nullptr, (EPropertyFlags)0x0014000000000080, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventSpawnUnitAtTile_Parms, UnitClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AGridUnit_NoRegister, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::NewProp_TargetTile,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::NewProp_UnitClass,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "SpawnUnitAtTile", nullptr, nullptr, Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::GridManager_eventSpawnUnitAtTile_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::Function_MetaDataParams) };
-static_assert(sizeof(Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::GridManager_eventSpawnUnitAtTile_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_AGridManager_SpawnUnitAtTile()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_SpawnUnitAtTile_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(AGridManager::execSpawnUnitAtTile)
-{
-	P_GET_OBJECT(AGridTile,Z_Param_TargetTile);
-	P_GET_OBJECT(UClass,Z_Param_UnitClass);
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->SpawnUnitAtTile(Z_Param_TargetTile,Z_Param_UnitClass);
-	P_NATIVE_END;
-}
-// End Class AGridManager Function SpawnUnitAtTile
-
-// Begin Class AGridManager Function UpdateGridSize
-struct Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics
-{
-	struct GridManager_eventUpdateGridSize_Parms
-	{
-		int32 NewWidth;
-		int32 NewHeight;
-		float NewTileSize;
-	};
-#if WITH_METADATA
-	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Grid" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "/** Updates the grid dynamically */" },
-#endif
-		{ "ModuleRelativePath", "Public/AGridManager.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Updates the grid dynamically" },
-#endif
-	};
-#endif // WITH_METADATA
-	static const UECodeGen_Private::FIntPropertyParams NewProp_NewWidth;
-	static const UECodeGen_Private::FIntPropertyParams NewProp_NewHeight;
-	static const UECodeGen_Private::FFloatPropertyParams NewProp_NewTileSize;
-	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
-	static const UECodeGen_Private::FFunctionParams FuncParams;
-};
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::NewProp_NewWidth = { "NewWidth", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventUpdateGridSize_Parms, NewWidth), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::NewProp_NewHeight = { "NewHeight", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventUpdateGridSize_Parms, NewHeight), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FFloatPropertyParams Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::NewProp_NewTileSize = { "NewTileSize", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventUpdateGridSize_Parms, NewTileSize), METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::NewProp_NewWidth,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::NewProp_NewHeight,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::NewProp_NewTileSize,
-};
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "UpdateGridSize", nullptr, nullptr, Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::GridManager_eventUpdateGridSize_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::Function_MetaDataParams) };
-static_assert(sizeof(Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::GridManager_eventUpdateGridSize_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_AGridManager_UpdateGridSize()
-{
-	static UFunction* ReturnFunction = nullptr;
-	if (!ReturnFunction)
-	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_UpdateGridSize_Statics::FuncParams);
-	}
-	return ReturnFunction;
-}
-DEFINE_FUNCTION(AGridManager::execUpdateGridSize)
-{
-	P_GET_PROPERTY(FIntProperty,Z_Param_NewWidth);
-	P_GET_PROPERTY(FIntProperty,Z_Param_NewHeight);
-	P_GET_PROPERTY(FFloatProperty,Z_Param_NewTileSize);
-	P_FINISH;
-	P_NATIVE_BEGIN;
-	P_THIS->UpdateGridSize(Z_Param_NewWidth,Z_Param_NewHeight,Z_Param_NewTileSize);
-	P_NATIVE_END;
-}
-// End Class AGridManager Function UpdateGridSize
-
 // Begin Class AGridManager
 void AGridManager::StaticRegisterNativesAGridManager()
 {
@@ -549,11 +328,7 @@ void AGridManager::StaticRegisterNativesAGridManager()
 		{ "HandleTileSelection", &AGridManager::execHandleTileSelection },
 		{ "HighlightValidMoves", &AGridManager::execHighlightValidMoves },
 		{ "MoveHeroToTile", &AGridManager::execMoveHeroToTile },
-		{ "MoveUnitToTile", &AGridManager::execMoveUnitToTile },
 		{ "SelectHero", &AGridManager::execSelectHero },
-		{ "SelectUnit", &AGridManager::execSelectUnit },
-		{ "SpawnUnitAtTile", &AGridManager::execSpawnUnitAtTile },
-		{ "UpdateGridSize", &AGridManager::execUpdateGridSize },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -633,16 +408,6 @@ struct Z_Construct_UClass_AGridManager_Statics
 		{ "Category", "Grid" },
 		{ "ModuleRelativePath", "Public/AGridManager.h" },
 	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SelectedHero_MetaData[] = {
-		{ "Category", "Grid" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// Stores tiles the hero can move to\n" },
-#endif
-		{ "ModuleRelativePath", "Public/AGridManager.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Stores tiles the hero can move to" },
-#endif
-	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridWidth;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridHeight;
@@ -653,20 +418,15 @@ struct Z_Construct_UClass_AGridManager_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectedUnit;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ValidMoveTiles_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_ValidMoveTiles;
-	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectedHero;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AGridManager_GenerateGrid, "GenerateGrid" }, // 1901740235
 		{ &Z_Construct_UFunction_AGridManager_GetValidMoves, "GetValidMoves" }, // 3656469206
 		{ &Z_Construct_UFunction_AGridManager_HandleTileSelection, "HandleTileSelection" }, // 3614714397
-		{ &Z_Construct_UFunction_AGridManager_HighlightValidMoves, "HighlightValidMoves" }, // 798988143
+		{ &Z_Construct_UFunction_AGridManager_HighlightValidMoves, "HighlightValidMoves" }, // 3050622611
 		{ &Z_Construct_UFunction_AGridManager_MoveHeroToTile, "MoveHeroToTile" }, // 3910739066
-		{ &Z_Construct_UFunction_AGridManager_MoveUnitToTile, "MoveUnitToTile" }, // 1267994468
 		{ &Z_Construct_UFunction_AGridManager_SelectHero, "SelectHero" }, // 2367155386
-		{ &Z_Construct_UFunction_AGridManager_SelectUnit, "SelectUnit" }, // 1915800287
-		{ &Z_Construct_UFunction_AGridManager_SpawnUnitAtTile, "SpawnUnitAtTile" }, // 3034025341
-		{ &Z_Construct_UFunction_AGridManager_UpdateGridSize, "UpdateGridSize" }, // 143312482
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -683,7 +443,6 @@ const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AGridManager_St
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedUnit = { "SelectedUnit", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, SelectedUnit), Z_Construct_UClass_AGridUnit_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedUnit_MetaData), NewProp_SelectedUnit_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles_Inner = { "ValidMoveTiles", nullptr, (EPropertyFlags)0x0000000000020000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles = { "ValidMoveTiles", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, ValidMoveTiles), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ValidMoveTiles_MetaData), NewProp_ValidMoveTiles_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedHero = { "SelectedHero", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, SelectedHero), Z_Construct_UClass_AHero_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedHero_MetaData), NewProp_SelectedHero_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridManager_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridWidth,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridHeight,
@@ -694,7 +453,6 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridMana
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedUnit,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedHero,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AGridManager_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AGridManager_Statics::DependentSingletons[])() = {
@@ -737,10 +495,10 @@ AGridManager::~AGridManager() {}
 struct Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridManager, AGridManager::StaticClass, TEXT("AGridManager"), &Z_Registration_Info_UClass_AGridManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridManager), 2455485054U) },
+		{ Z_Construct_UClass_AGridManager, AGridManager::StaticClass, TEXT("AGridManager"), &Z_Registration_Info_UClass_AGridManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridManager), 1115215995U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_2024037102(TEXT("/Script/StrategyRPG"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_4090249265(TEXT("/Script/StrategyRPG"),
 	Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

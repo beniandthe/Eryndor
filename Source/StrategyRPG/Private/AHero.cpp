@@ -5,23 +5,35 @@
 #include "Kismet/GameplayStatics.h"
 #include "GameFramework/PlayerController.h"
 #include "GameFramework/GameModeBase.h"
+#include "AIController.h"
+#include "Blueprint/AIBlueprintHelperLibrary.h" 
+#include "GameFramework/SpringArmComponent.h"
+#include "Camera/CameraComponent.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
 
 
+
 AHero::AHero()
 {
     PrimaryActorTick.bCanEverTick = true;
 
-    // Set up the input bindings for the character's movement
-    PlayerController = Cast<APlayerController>(GetController());
+    // Create Camera Boom
+    CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
+    CameraBoom->SetupAttachment(RootComponent);  // Attach to Root (Character)
+    CameraBoom->TargetArmLength = 600.0f;  // Distance between camera and player
+    CameraBoom->bUsePawnControlRotation = true;  // Rotate the camera with the player
 
-    // Ensure the mesh allows for interaction
-    GetMesh()->SetCollisionObjectType(ECC_Pawn);
-    GetMesh()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
-    GetMesh()->SetCollisionResponseToChannel(ECC_Visibility, ECR_Block);
+    // Create Follow Camera
+    FollowCamera = CreateDefaultSubobject<UCameraComponent>(TEXT("FollowCamera"));
+    FollowCamera->SetupAttachment(CameraBoom);  // Attach Camera to the Boom
+    FollowCamera->bUsePawnControlRotation = false;  // Camera does not rotate with character
+
+    // Disable automatic character rotation (Handled manually)
+    bUseControllerRotationYaw = false;
+    GetCharacterMovement()->bOrientRotationToMovement = true;
 
     // Default Attribute Values
     Strength = 10;
@@ -35,78 +47,86 @@ AHero::AHero()
 
     // Derived Stats Initialization
     CalculateDerivedStats();
-}
 
-// Called every frame
-void AHero::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-
-    // If we have a valid player controller, check for mouse input
-    if (PlayerController && PlayerController->IsInputKeyDown(EKeys::LeftMouseButton))
-    {
-        HandleClickMovement();
-    }
+	MovementRange; // Movement range based on Stamina
+    EquippedArmorWeight = 0.0f;
 }
 
 void AHero::BeginPlay()
 {
     Super::BeginPlay();
 
-    // Set up the input bindings for the character's movement
-    PlayerController = Cast<APlayerController>(GetController());
+    CalculateMovementRange(CurrentTile);
+
+
+    // Ensure the hero gets control from the correct Player Controller
+    APlayerController* PC = Cast<APlayerController>(GetController());
+    if (PC)
+    {
+        PC->Possess(this); // Give control to this pawn
+    }
+
+    bUseControllerRotationYaw = false;
+
+    // Allow character to orient based on movement direction
+    GetCharacterMovement()->bOrientRotationToMovement = true;
+    GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f); // Adjust turn speed
+
+    // Find the Grid Manager
+    AGridManager* LocalGridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+    GridManager = LocalGridManager;
+
     CalculateDerivedStats();
 }
 
-// Function to handle mouse click movement
-void AHero::HandleClickMovement()
+
+void AHero::NotifyActorOnClicked(FKey ButtonPressed)
 {
-    FVector MouseLocation, MouseDirection;
-    if (PlayerController->DeprojectMousePositionToWorld(MouseLocation, MouseDirection))
+    Super::NotifyActorOnClicked(ButtonPressed);
+
+    AGridManager* LocalGridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+
+
+    if (LocalGridManager)
     {
-        FHitResult HitResult;
-        FVector Start = MouseLocation;
-        FVector End = MouseLocation + (MouseDirection * 10000.f);
-
-        FCollisionQueryParams CollisionParams;
-        CollisionParams.AddIgnoredActor(this);
-        bool bHit = GetWorld()->LineTraceSingleByChannel(HitResult, Start, End, ECC_Visibility, CollisionParams);
-
-        if (bHit)
-        {
-            MoveToLocation(HitResult.ImpactPoint);
-        }
+        UE_LOG(LogTemp, Warning, TEXT("Hero Selected"));
+        GridManager->SelectHero(this);
     }
 }
 
-// Function to move the character to the clicked location
-void AHero::MoveToLocation(const FVector& Destination)
+int32 AHero::GetMoveRange() const
 {
-    if (GetController())
-    {
-        // Get the current location of the character
-        FVector CurrentLocation = GetActorLocation();
-
-        // Calculate the direction towards the destination
-        FVector Direction = (Destination - CurrentLocation).GetSafeNormal();
-
-        // Get the Character's Movement Component
-        UCharacterMovementComponent* MovementComponent = GetCharacterMovement();
-
-        if (MovementComponent)
-        {
-            // Adjust movement speed (you can set this based on your gameplay needs)
-            const float MoveSpeed = 600.f;  // Change as necessary
-
-            // Apply velocity in the direction of the destination
-            MovementComponent->Velocity = Direction * MoveSpeed;  // Velocity is the speed in the direction
-
-            // Optional: Ensure the character is facing the movement direction
-            FRotator NewRotation = Direction.Rotation();
-            SetActorRotation(NewRotation);
-        }
-    }
+    // Example logic to determine move range
+    return Dexterity / 2; // Example: Move range based on Dexterity
 }
+
+
+void AHero::MoveToTile(AGridTile* TargetTile)
+{
+    if (!TargetTile) return;
+
+    AController* LocalController = GetController();
+    if (!LocalController)
+    {
+        UE_LOG(LogTemp, Error, TEXT("MoveToTile: No valid Controller found!"));
+        return;
+    }
+
+    UNavigationSystemV1* NavSystem = FNavigationSystem::GetCurrent<UNavigationSystemV1>(GetWorld());
+    if (!NavSystem)
+    {
+        UE_LOG(LogTemp, Error, TEXT("MoveToTile: No valid Navigation System found!"));
+        return;
+    }
+
+    // Ensure the AI or player-controlled unit moves to the location using pathfinding
+    LocalController->StopMovement();
+    UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetTile->GetActorLocation());
+
+    // Update the Hero's current tile reference
+    CurrentTile = TargetTile;
+}
+
 
 void AHero::CalculateDerivedStats()
 {
@@ -142,6 +162,18 @@ void AHero::CalculateDerivedStats()
     // Morality-Based Essence Pools
     LightEssence = FMath::Clamp(Faith * 2.0f - DarkEssenceThreshold, 0.0f, 100.0f);
     DarkEssence = FMath::Clamp(Faith * 2.0f - LightEssenceThreshold, 0.0f, 100.0f);
+
+    // Base stamina is derived from endurance and dexterity
+    float BaseStamina = (Endurance * 6.0f) + (Dexterity * 2.0f);
+
+    // Apply armor weight penalty (Heavier armor reduces stamina)
+    float ArmorPenalty = EquippedArmorWeight * 0.5f;
+
+    // Final Stamina Calculation
+    Stamina = FMath::Max(5.0f, BaseStamina - ArmorPenalty); // Min stamina is 5
+
+    // Update movement range dynamically
+    CalculateMovementRange(CurrentTile);
 }
 
 void AHero::ModifyAttribute(FString AttributeName, int32 Value)
@@ -158,13 +190,31 @@ void AHero::ModifyAttribute(FString AttributeName, int32 Value)
     CalculateDerivedStats();
 }
 
-void AHero::MoveToTile(AGridTile* TargetTile)
+void AHero::CalculateMovementRange(AGridTile* Tile)
 {
-    if (!TargetTile) return;
+    // Base movement range = Stamina / 3
+    float BaseMoveRange = Stamina / 3.0f;
 
-    CurrentTile = TargetTile;
-    FVector MoveLocation = TargetTile->GetActorLocation();
-    SetActorLocation(MoveLocation);
+    // Apply armor penalty (heavy armor slows movement)
+    float ArmorMovePenalty = EquippedArmorWeight * 0.2f;
+    BaseMoveRange -= ArmorMovePenalty;
+
+    // Adjust movement range based on terrain difficulty
+    float TerrainModifier = 1.0f; // Default (Normal terrain)
+
+    if (Tile)
+    {
+        if (Tile->TileType == "Water") { TerrainModifier = 0.5f; }   // Water halves movement
+        else if (Tile->TileType == "Mud") { TerrainModifier = 0.7f; } // Mud reduces movement by 30%
+        else if (Tile->TileType == "Snow") { TerrainModifier = 0.6f; } // Snow reduces movement by 40%
+    }
+
+    // Apply terrain modifier
+    BaseMoveRange *= TerrainModifier;
+
+    // Ensure minimum movement range is at least 1
+    MovementRange = FMath::Max(1, FMath::RoundToInt(BaseMoveRange));
+    UE_LOG(LogTemp, Warning, TEXT("Hero Movement Range: %d"), MovementRange);
 }
 
 void AHero::SetCurrentTile(AGridTile* NewTile)
@@ -176,15 +226,10 @@ void AHero::SetCurrentTile(AGridTile* NewTile)
     }
 }
 
-void AHero::NotifyActorOnClicked(FKey ButtonPressed)
+void AHero::SetEquippedArmorWeight(float NewWeight)
 {
-    Super::NotifyActorOnClicked(ButtonPressed);
-
-    UE_LOG(LogTemp, Warning, TEXT("Hero Clicked!"));
-
-    // Get reference to AGridManager and select this hero
-    if (AGridManager* GridManager = Cast<AGridManager>(GetWorld()->GetAuthGameMode()))
-    {
-        GridManager->SelectHero(this);
-    }
+    EquippedArmorWeight = NewWeight;
+    CalculateMovementRange(CurrentTile); // Recalculate movement range with new weight
 }
+
+

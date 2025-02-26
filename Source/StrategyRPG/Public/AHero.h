@@ -7,10 +7,17 @@
 #include "GridTile.h"
 #include "AHero.generated.h"
 
+class AGridManager;
+class USpringArmComponent;
+class UCameraComponent;
+
 UCLASS()
 class STRATEGYRPG_API AHero : public ACharacter
 {
     GENERATED_BODY()
+
+private:
+	APlayerController* PlayerController;    
 
 public:
     AHero();
@@ -126,39 +133,71 @@ public:
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Class")
     EHeroClass HeroClass;
 
-    /** Sets the hero's current tile */
-    UFUNCTION(BlueprintCallable, Category = "Grid")
-    void SetCurrentTile(AGridTile* NewTile);
-
-    /** Current Grid Tile Reference */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
-    AGridTile* CurrentTile;
-
-    /** Movement Function */
-    UFUNCTION(BlueprintCallable, Category = "Movement")
-    void MoveToTile(AGridTile* TargetTile);
-
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Movement")
-    int32 MovementRange = 5;
-
-
-
-    /** Override Click Event */
+    
+    /** Click Event for Selection */
     virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 
-	virtual void Tick(float DeltaTime) override;
+    /** Movement Handling */
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    void MoveToTile(AGridTile* TargetTile);
 
-    // function handle mouse click movement
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	void HandleClickMovement();
+    /** Hero's Current Grid Position */
+    UPROPERTY(VisibleAnywhere, BlueprintReadWrite, Category = "Grid")
+    AGridTile* CurrentTile;
 
-    // Function to move the character to the clicked destination */
-	UFUNCTION(BlueprintCallable, Category = "Movement")
-	void MoveToLocation(const FVector& Destination); 
+    /** Reference to Grid Manager */
+    UPROPERTY()
+    AGridManager* GridManager;
 
-    private:
-		/** Reference to the player controller */
-		APlayerController* PlayerController;
+	UFUNCTION(BlueprintCallable, Category = "Grid")
+	void SetCurrentTile(AGridTile* NewTile);
 
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Stats")
+    int32 MovementRange;
+
+    int32 GetMoveRange() const;
+
+    UFUNCTION(BlueprintCallable, Category = "Stats")
+    void CalculateMovementRange(AGridTile* Tile);
+
+    // Armor Weight (Affects movement speed)
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Equipment")
+    float EquippedArmorWeight;
+
+	UFUNCTION(BlueprintCallable, Category = "Equipment")
+	void SetEquippedArmorWeight(float Weight);
+    
+    // Camera Boom (Spring Arm) for smooth camera movement
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    USpringArmComponent* CameraBoom;
+
+    // Follow Camera
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
+    UCameraComponent* FollowCamera;
 };
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+    
+   
 

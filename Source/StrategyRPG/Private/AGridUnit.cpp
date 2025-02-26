@@ -12,12 +12,29 @@ AGridUnit::AGridUnit()
     RootComponent = UnitMesh;
 }
 
+void AGridUnit::BeginPlay()
+{
+    Super::BeginPlay();
+}
+
+void AGridUnit::Tick(float DeltaTime)
+{
+    Super::Tick(DeltaTime);
+}
+
 void AGridUnit::SetPositionOnGrid(AGridTile* NewTile)
 {
     if (NewTile)
     {
+        if (OccupiedTile)
+        {
+            OccupiedTile->bIsOccupied = false; // Free the old tile
+        }
+
         OccupiedTile = NewTile;
-        SetActorLocation(NewTile->GetActorLocation() + FVector(0.f, 0.f, 50.f)); // Offset for visibility
+        NewTile->bIsOccupied = true;
+
+        SetActorLocation(NewTile->GetActorLocation() + FVector(0.f, 0.f, 50.f)); // Slight offset for visibility
     }
 }
 

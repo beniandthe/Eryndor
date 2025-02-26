@@ -19,6 +19,11 @@ protected:
 public:
     virtual void Tick(float DeltaTime) override;
 
+    // Mesh component for the tile
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tile")
+    UStaticMeshComponent* TileMesh;
+
+
     // Grid Position
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
     int32 GridX;
@@ -46,5 +51,8 @@ public:
 
     UFUNCTION(BlueprintCallable, Category = "Grid")
     void HighlightTile(bool bEnable);
+
+    /** Handle Click Event */
+    virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 };
 

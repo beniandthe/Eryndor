@@ -8,6 +8,6 @@ public class StrategyRPG : ModuleRules
 	{
 		PCHUsage = PCHUsageMode.UseExplicitOrSharedPCHs;
 
-        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", "AIModule", "Niagara", "TextureCompressor", "EnhancedInput", "RenderCore", "RHI" });
+        PublicDependencyModuleNames.AddRange(new string[] { "Core", "CoreUObject", "Engine", "InputCore", "NavigationSystem", "AIModule", "Niagara", "TextureCompressor", "EnhancedInput", "HeadMountedDisplay", "RenderCore", "RHI" });
     }
 }

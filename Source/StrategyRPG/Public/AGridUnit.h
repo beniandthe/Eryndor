@@ -23,7 +23,13 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Grid")
     void SetPositionOnGrid(AGridTile* NewTile);
 
-    /** Detect when unit is clicked */
+protected:
+    virtual void BeginPlay() override;
+
+public:
+    virtual void Tick(float DeltaTime) override;
+
+    /** Handles unit selection */
     virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 };
 

@@ -10,7 +10,6 @@
 
 PRAGMA_DISABLE_DEPRECATION_WARNINGS
 class AGridTile;
-class AGridUnit;
 class AHero;
 #ifdef STRATEGYRPG_AGridManager_generated_h
 #error "AGridManager.generated.h already included, missing '#pragma once' in AGridManager.h"
@@ -18,16 +17,12 @@ class AHero;
 #define STRATEGYRPG_AGridManager_generated_h
 
 #define FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_16_RPC_WRAPPERS_NO_PURE_DECLS \
-	DECLARE_FUNCTION(execMoveUnitToTile); \
 	DECLARE_FUNCTION(execMoveHeroToTile); \
 	DECLARE_FUNCTION(execHandleTileSelection); \
 	DECLARE_FUNCTION(execHighlightValidMoves); \
 	DECLARE_FUNCTION(execGetValidMoves); \
-	DECLARE_FUNCTION(execUpdateGridSize); \
 	DECLARE_FUNCTION(execGenerateGrid); \
-	DECLARE_FUNCTION(execSelectHero); \
-	DECLARE_FUNCTION(execSelectUnit); \
-	DECLARE_FUNCTION(execSpawnUnitAtTile);
+	DECLARE_FUNCTION(execSelectHero);
 
 
 #define FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_16_INCLASS_NO_PURE_DECLS \

@@ -1,13 +1,16 @@
 #include "GridTile.h"
+#include "AGridManager.h"
 #include "Components/StaticMeshComponent.h"
+#include "Kismet/GameplayStatics.h"
+
 // Constructor
 AGridTile::AGridTile()
 {
     PrimaryActorTick.bCanEverTick = false;
 
-    // Create a default Static Mesh for visualization (optional)
-    UStaticMeshComponent* MeshComponent = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TileMesh"));
-    RootComponent = MeshComponent;
+    // Store the mesh as a UPROPERTY to modify later
+    TileMesh = CreateDefaultSubobject<UStaticMeshComponent>(TEXT("TileMesh"));
+    RootComponent = TileMesh;
 
     bIsOccupied = false;
     bIsWalkable = true;  // Default setting
@@ -41,3 +44,14 @@ void AGridTile::HighlightTile(bool bEnable)
     SetActorScale3D(bEnable ? FVector(1.1f, 1.1f, 1.1f) : FVector(1.0f, 1.0f, 1.0f));
 }
 
+void AGridTile::NotifyActorOnClicked(FKey ButtonPressed)
+{
+    Super::NotifyActorOnClicked(ButtonPressed);
+
+    // Get Grid Manager
+    AGridManager* GridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+    if (GridManager)
+    {
+        GridManager->HandleTileSelection(this);
+    }
+}
