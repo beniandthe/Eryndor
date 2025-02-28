@@ -13,6 +13,7 @@
 #include "NavigationPath.h"
 #include "Engine/World.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "Components/CapsuleComponent.h"
 
 
 
@@ -23,7 +24,7 @@ AHero::AHero()
     // Create Camera Boom
     CameraBoom = CreateDefaultSubobject<USpringArmComponent>(TEXT("CameraBoom"));
     CameraBoom->SetupAttachment(RootComponent);  // Attach to Root (Character)
-    CameraBoom->TargetArmLength = 600.0f;  // Distance between camera and player
+    CameraBoom->TargetArmLength = 1400.0f;  // Distance between camera and player
     CameraBoom->bUsePawnControlRotation = true;  // Rotate the camera with the player
 
     // Create Follow Camera
@@ -34,6 +35,14 @@ AHero::AHero()
     // Disable automatic character rotation (Handled manually)
     bUseControllerRotationYaw = false;
     GetCharacterMovement()->bOrientRotationToMovement = true;
+
+    // Ensure hero has proper collision
+    GetCapsuleComponent()->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    GetCapsuleComponent()->SetCollisionObjectType(ECollisionChannel::ECC_Pawn);
+    GetCapsuleComponent()->SetCollisionResponseToAllChannels(ECR_Block);
+
+    // Ensure movement works properly
+    GetCharacterMovement()->MaxWalkSpeed = 600.0f;
 
     // Default Attribute Values
     Strength = 10;
@@ -118,6 +127,9 @@ void AHero::MoveToTile(AGridTile* TargetTile)
         UE_LOG(LogTemp, Error, TEXT("MoveToTile: No valid Navigation System found!"));
         return;
     }
+
+    UE_LOG(LogTemp, Warning, TEXT("Hero Position Before Move: %s"), *GetActorLocation().ToString());
+	UE_LOG(LogTemp, Warning, TEXT("Moving to Tile: %s"), *TargetTile->GetActorLocation().ToString());
 
     // Ensure the AI or player-controlled unit moves to the location using pathfinding
     LocalController->StopMovement();
@@ -204,9 +216,12 @@ void AHero::CalculateMovementRange(AGridTile* Tile)
 
     if (Tile)
     {
-        if (Tile->TileType == "Water") { TerrainModifier = 0.5f; }   // Water halves movement
-        else if (Tile->TileType == "Mud") { TerrainModifier = 0.7f; } // Mud reduces movement by 30%
-        else if (Tile->TileType == "Snow") { TerrainModifier = 0.6f; } // Snow reduces movement by 40%
+        if (Tile->TileType == EGridTileType::Water) { TerrainModifier = 0.5f; }   // Water halves movement
+        else if (Tile->TileType == EGridTileType::Swamp) { TerrainModifier = 0.7f; } // Swamp reduces movement by 30%
+        else if (Tile->TileType == EGridTileType::Snow) { TerrainModifier = 0.6f; } // Snow reduces movement by 40%
+		else if (Tile->TileType == EGridTileType::Mountain) { TerrainModifier = 0.4f; } // Mountains reduce movement by 60%
+		else if (Tile->TileType == EGridTileType::Forest) { TerrainModifier = 0.8f; } // Forests reduce movement by 20%
+		else if (Tile->TileType == EGridTileType::Desert) { TerrainModifier = 0.9f; } // Deserts reduce movement by 10%
     }
 
     // Apply terrain modifier

@@ -95,7 +95,7 @@ void AGridManager::GenerateGrid()
 
             if (NewTile)
             {
-                NewTile->InitializeTile(X, Y, "Default");
+                NewTile->InitializeTile(X, Y, EGridTileType::Custom);
                 GridTiles.Add(NewTile);
                 TileCount++;
             }
@@ -114,28 +114,27 @@ void AGridManager::HighlightValidMoves(AHero* Hero)
 {
     if (!Hero) return;
 
-    // Clear previous highlights
-    for (AGridTile* Tile : GridTiles)
-    {
-        Tile->HighlightTile(false);
-    }
+    // Clear previous move tiles
+    ValidMoveTiles.Empty();
 
     // Get the hero’s position
     FVector HeroLocation = Hero->GetActorLocation();
     int32 HeroX = FMath::RoundToInt(HeroLocation.X / TileSize);
     int32 HeroY = FMath::RoundToInt(HeroLocation.Y / TileSize);
 
-    // Highlight tiles within the movement range
+    // Identify valid movement tiles
     for (AGridTile* Tile : GridTiles)
     {
         int32 Distance = FMath::Abs(Tile->GridX - HeroX) + FMath::Abs(Tile->GridY - HeroY);
         if (Distance <= Hero->MovementRange && !Tile->bIsOccupied)
         {
-            Tile->HighlightTile(true);
-            UE_LOG(LogTemp, Warning, TEXT("Highlighting %d Valid Move Tiles"), ValidMoveTiles.Num());
+            ValidMoveTiles.Add(Tile);
         }
     }
+
+    UE_LOG(LogTemp, Warning, TEXT("Found %d Valid Move Tiles"), ValidMoveTiles.Num());
 }
+
 
 
 void AGridManager::SelectUnit(AGridUnit* Unit)
@@ -194,7 +193,6 @@ void AGridManager::MoveHeroToTile(AHero* Hero, AGridTile* TargetTile)
     AController* LocalController = Hero->GetController();
     if (LocalController)
     {
-
         FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Hero->GetActorLocation(), TargetLocation);
 
         // Interpolate rotation **before moving**
@@ -217,19 +215,9 @@ void AGridManager::MoveHeroToTile(AHero* Hero, AGridTile* TargetTile)
     // Recalculate movement range dynamically
     Hero->CalculateMovementRange(TargetTile);
 
-    // Move hero & update tile references
-    Hero->SetActorLocation(TargetTile->GetActorLocation());
-    Hero->CurrentTile = TargetTile;
-
-    // Clear movement highlights
-    for (AGridTile* Tile : GridTiles)
-    {
-        Tile->HighlightTile(false);
-    }
-
     // **Move hero using AI Navigation**
     if (LocalController)
-    {   
+    {
         UE_LOG(LogTemp, Warning, TEXT("AI Controller Found. Moving..."));
         UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
         if (NavSystem)
@@ -238,20 +226,25 @@ void AGridManager::MoveHeroToTile(AHero* Hero, AGridTile* TargetTile)
             UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetLocation);
             UE_LOG(LogTemp, Warning, TEXT("Movement Command Sent"));
 
-            // Ensure movement animation updates properly
+            // **Ensure movement animation updates properly**
             FVector MoveDirection = (TargetLocation - Hero->GetActorLocation()).GetSafeNormal();
             Hero->GetCharacterMovement()->Velocity = MoveDirection * Hero->GetCharacterMovement()->MaxWalkSpeed;
+
+            // **?? Spawn footprints along AI path**
+            TargetTile->SpawnFootprintsAlongPath(Hero, TargetTile);
         }
         else
         {
             UE_LOG(LogTemp, Error, TEXT("Navigation System Not Found!"));
         }
-	}
-	else
-	{
-		UE_LOG(LogTemp, Error, TEXT("AI Controller Not Found!"));
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("AI Controller Not Found!"));
     }
 }
+
+
 
 
 TArray<AGridTile*> AGridManager::GetValidMoves(AHero* Unit, int32 MoveRange)

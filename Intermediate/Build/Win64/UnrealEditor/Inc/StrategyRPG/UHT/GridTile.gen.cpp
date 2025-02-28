@@ -12,66 +12,144 @@ void EmptyLinkFunctionForGeneratedCodeGridTile() {}
 // Begin Cross Module References
 COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
+ENGINE_API UClass* Z_Construct_UClass_UMaterialInterface_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_UStaticMeshComponent_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridTile();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridTile_NoRegister();
+STRATEGYRPG_API UEnum* Z_Construct_UEnum_StrategyRPG_EGridTileType();
 UPackage* Z_Construct_UPackage__Script_StrategyRPG();
 // End Cross Module References
 
-// Begin Class AGridTile Function HighlightTile
-struct Z_Construct_UFunction_AGridTile_HighlightTile_Statics
+// Begin Enum EGridTileType
+static FEnumRegistrationInfo Z_Registration_Info_UEnum_EGridTileType;
+static UEnum* EGridTileType_StaticEnum()
 {
-	struct GridTile_eventHighlightTile_Parms
+	if (!Z_Registration_Info_UEnum_EGridTileType.OuterSingleton)
 	{
-		bool bEnable;
+		Z_Registration_Info_UEnum_EGridTileType.OuterSingleton = GetStaticEnum(Z_Construct_UEnum_StrategyRPG_EGridTileType, (UObject*)Z_Construct_UPackage__Script_StrategyRPG(), TEXT("EGridTileType"));
+	}
+	return Z_Registration_Info_UEnum_EGridTileType.OuterSingleton;
+}
+template<> STRATEGYRPG_API UEnum* StaticEnum<EGridTileType>()
+{
+	return EGridTileType_StaticEnum();
+}
+struct Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Enum_MetaDataParams[] = {
+		{ "BlueprintType", "true" },
+		{ "Custom.DisplayName", "Custom" },
+		{ "Custom.Name", "EGridTileType::Custom" },
+		{ "Desert.DisplayName", "Desert" },
+		{ "Desert.Name", "EGridTileType::Desert" },
+		{ "Forest.DisplayName", "Forest" },
+		{ "Forest.Name", "EGridTileType::Forest" },
+		{ "ModuleRelativePath", "Public/GridTile.h" },
+		{ "Mountain.DisplayName", "Mountain" },
+		{ "Mountain.Name", "EGridTileType::Mountain" },
+		{ "Road.DisplayName", "Road" },
+		{ "Road.Name", "EGridTileType::Road" },
+		{ "Snow.DisplayName", "Snow" },
+		{ "Snow.Name", "EGridTileType::Snow" },
+		{ "Swamp.DisplayName", "Swamp" },
+		{ "Swamp.Name", "EGridTileType::Swamp" },
+		{ "Water.DisplayName", "Water" },
+		{ "Water.Name", "EGridTileType::Water" },
+	};
+#endif // WITH_METADATA
+	static constexpr UECodeGen_Private::FEnumeratorParam Enumerators[] = {
+		{ "EGridTileType::Snow", (int64)EGridTileType::Snow },
+		{ "EGridTileType::Forest", (int64)EGridTileType::Forest },
+		{ "EGridTileType::Mountain", (int64)EGridTileType::Mountain },
+		{ "EGridTileType::Water", (int64)EGridTileType::Water },
+		{ "EGridTileType::Swamp", (int64)EGridTileType::Swamp },
+		{ "EGridTileType::Desert", (int64)EGridTileType::Desert },
+		{ "EGridTileType::Road", (int64)EGridTileType::Road },
+		{ "EGridTileType::Custom", (int64)EGridTileType::Custom },
+	};
+	static const UECodeGen_Private::FEnumParams EnumParams;
+};
+const UECodeGen_Private::FEnumParams Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics::EnumParams = {
+	(UObject*(*)())Z_Construct_UPackage__Script_StrategyRPG,
+	nullptr,
+	"EGridTileType",
+	"EGridTileType",
+	Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics::Enumerators,
+	RF_Public|RF_Transient|RF_MarkAsNative,
+	UE_ARRAY_COUNT(Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics::Enumerators),
+	EEnumFlags::None,
+	(uint8)UEnum::ECppForm::EnumClass,
+	METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics::Enum_MetaDataParams), Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics::Enum_MetaDataParams)
+};
+UEnum* Z_Construct_UEnum_StrategyRPG_EGridTileType()
+{
+	if (!Z_Registration_Info_UEnum_EGridTileType.InnerSingleton)
+	{
+		UECodeGen_Private::ConstructUEnum(Z_Registration_Info_UEnum_EGridTileType.InnerSingleton, Z_Construct_UEnum_StrategyRPG_EGridTileType_Statics::EnumParams);
+	}
+	return Z_Registration_Info_UEnum_EGridTileType.InnerSingleton;
+}
+// End Enum EGridTileType
+
+// Begin Class AGridTile Function SetTileType
+struct Z_Construct_UFunction_AGridTile_SetTileType_Statics
+{
+	struct GridTile_eventSetTileType_Parms
+	{
+		EGridTileType NewType;
 	};
 #if WITH_METADATA
 	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
-		{ "Category", "Grid" },
+		{ "Category", "Tile" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Function to Set Tile Properties Based on Type */" },
+#endif
 		{ "ModuleRelativePath", "Public/GridTile.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Function to Set Tile Properties Based on Type" },
+#endif
 	};
 #endif // WITH_METADATA
-	static void NewProp_bEnable_SetBit(void* Obj);
-	static const UECodeGen_Private::FBoolPropertyParams NewProp_bEnable;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_NewType_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_NewType;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static const UECodeGen_Private::FFunctionParams FuncParams;
 };
-void Z_Construct_UFunction_AGridTile_HighlightTile_Statics::NewProp_bEnable_SetBit(void* Obj)
-{
-	((GridTile_eventHighlightTile_Parms*)Obj)->bEnable = 1;
-}
-const UECodeGen_Private::FBoolPropertyParams Z_Construct_UFunction_AGridTile_HighlightTile_Statics::NewProp_bEnable = { "bEnable", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(GridTile_eventHighlightTile_Parms), &Z_Construct_UFunction_AGridTile_HighlightTile_Statics::NewProp_bEnable_SetBit, METADATA_PARAMS(0, nullptr) };
-const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridTile_HighlightTile_Statics::PropPointers[] = {
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridTile_HighlightTile_Statics::NewProp_bEnable,
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UFunction_AGridTile_SetTileType_Statics::NewProp_NewType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_AGridTile_SetTileType_Statics::NewProp_NewType = { "NewType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridTile_eventSetTileType_Parms, NewType), Z_Construct_UEnum_StrategyRPG_EGridTileType, METADATA_PARAMS(0, nullptr) }; // 475922582
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridTile_SetTileType_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridTile_SetTileType_Statics::NewProp_NewType_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridTile_SetTileType_Statics::NewProp_NewType,
 };
-static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridTile_HighlightTile_Statics::PropPointers) < 2048);
-const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridTile_HighlightTile_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridTile, nullptr, "HighlightTile", nullptr, nullptr, Z_Construct_UFunction_AGridTile_HighlightTile_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridTile_HighlightTile_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridTile_HighlightTile_Statics::GridTile_eventHighlightTile_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridTile_HighlightTile_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridTile_HighlightTile_Statics::Function_MetaDataParams) };
-static_assert(sizeof(Z_Construct_UFunction_AGridTile_HighlightTile_Statics::GridTile_eventHighlightTile_Parms) < MAX_uint16);
-UFunction* Z_Construct_UFunction_AGridTile_HighlightTile()
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridTile_SetTileType_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridTile_SetTileType_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridTile, nullptr, "SetTileType", nullptr, nullptr, Z_Construct_UFunction_AGridTile_SetTileType_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridTile_SetTileType_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridTile_SetTileType_Statics::GridTile_eventSetTileType_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridTile_SetTileType_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridTile_SetTileType_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AGridTile_SetTileType_Statics::GridTile_eventSetTileType_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridTile_SetTileType()
 {
 	static UFunction* ReturnFunction = nullptr;
 	if (!ReturnFunction)
 	{
-		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridTile_HighlightTile_Statics::FuncParams);
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridTile_SetTileType_Statics::FuncParams);
 	}
 	return ReturnFunction;
 }
-DEFINE_FUNCTION(AGridTile::execHighlightTile)
+DEFINE_FUNCTION(AGridTile::execSetTileType)
 {
-	P_GET_UBOOL(Z_Param_bEnable);
+	P_GET_ENUM(EGridTileType,Z_Param_NewType);
 	P_FINISH;
 	P_NATIVE_BEGIN;
-	P_THIS->HighlightTile(Z_Param_bEnable);
+	P_THIS->SetTileType(EGridTileType(Z_Param_NewType));
 	P_NATIVE_END;
 }
-// End Class AGridTile Function HighlightTile
+// End Class AGridTile Function SetTileType
 
 // Begin Class AGridTile
 void AGridTile::StaticRegisterNativesAGridTile()
 {
 	UClass* Class = AGridTile::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
-		{ "HighlightTile", &AGridTile::execHighlightTile },
+		{ "SetTileType", &AGridTile::execSetTileType },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -87,10 +165,20 @@ struct Z_Construct_UClass_AGridTile_Statics
 		{ "IncludePath", "GridTile.h" },
 		{ "ModuleRelativePath", "Public/GridTile.h" },
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_FootprintMaterial_MetaData[] = {
+		{ "Category", "Footprints" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// Reference to the material for footprints\n" },
+#endif
+		{ "ModuleRelativePath", "Public/GridTile.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Reference to the material for footprints" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TileMesh_MetaData[] = {
 		{ "Category", "Tile" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Mesh component for the tile\n" },
+		{ "Comment", "/** Mesh component for the tile */" },
 #endif
 		{ "EditInline", "true" },
 		{ "ModuleRelativePath", "Public/GridTile.h" },
@@ -101,7 +189,7 @@ struct Z_Construct_UClass_AGridTile_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GridX_MetaData[] = {
 		{ "Category", "Grid" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Grid Position\n" },
+		{ "Comment", "/** Grid Position */" },
 #endif
 		{ "ModuleRelativePath", "Public/GridTile.h" },
 #if !UE_BUILD_SHIPPING
@@ -119,21 +207,11 @@ struct Z_Construct_UClass_AGridTile_Statics
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsOccupied_MetaData[] = {
 		{ "Category", "Grid" },
 #if !UE_BUILD_SHIPPING
-		{ "Comment", "// Whether the tile is occupied by a unit\n" },
+		{ "Comment", "/** Whether the tile is occupied by a unit */" },
 #endif
 		{ "ModuleRelativePath", "Public/GridTile.h" },
 #if !UE_BUILD_SHIPPING
 		{ "ToolTip", "Whether the tile is occupied by a unit" },
-#endif
-	};
-	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TileType_MetaData[] = {
-		{ "Category", "Grid" },
-#if !UE_BUILD_SHIPPING
-		{ "Comment", "// Set Tile Type (e.g., Grass, Water, Mountain)\n" },
-#endif
-		{ "ModuleRelativePath", "Public/GridTile.h" },
-#if !UE_BUILD_SHIPPING
-		{ "ToolTip", "Set Tile Type (e.g., Grass, Water, Mountain)" },
 #endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsWalkable_MetaData[] = {
@@ -146,20 +224,32 @@ struct Z_Construct_UClass_AGridTile_Statics
 		{ "ToolTip", "Determines if the tile is walkable" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TileType_MetaData[] = {
+		{ "Category", "Tile Properties" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Tile Type Enum (Visible in Blueprints) */" },
+#endif
+		{ "ModuleRelativePath", "Public/GridTile.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Tile Type Enum (Visible in Blueprints)" },
+#endif
+	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_FootprintMaterial;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_TileMesh;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridX;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridY;
 	static const UECodeGen_Private::FStructPropertyParams NewProp_GridPosition;
 	static void NewProp_bIsOccupied_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsOccupied;
-	static const UECodeGen_Private::FStrPropertyParams NewProp_TileType;
 	static void NewProp_bIsWalkable_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsWalkable;
+	static const UECodeGen_Private::FBytePropertyParams NewProp_TileType_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_TileType;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
-		{ &Z_Construct_UFunction_AGridTile_HighlightTile, "HighlightTile" }, // 537721166
+		{ &Z_Construct_UFunction_AGridTile_SetTileType, "SetTileType" }, // 3682274378
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -167,6 +257,7 @@ struct Z_Construct_UClass_AGridTile_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_FootprintMaterial = { "FootprintMaterial", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridTile, FootprintMaterial), Z_Construct_UClass_UMaterialInterface_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FootprintMaterial_MetaData), NewProp_FootprintMaterial_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_TileMesh = { "TileMesh", nullptr, (EPropertyFlags)0x00100000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridTile, TileMesh), Z_Construct_UClass_UStaticMeshComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TileMesh_MetaData), NewProp_TileMesh_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_GridX = { "GridX", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridTile, GridX), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridX_MetaData), NewProp_GridX_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_GridY = { "GridY", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridTile, GridY), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridY_MetaData), NewProp_GridY_MetaData) };
@@ -176,20 +267,23 @@ void Z_Construct_UClass_AGridTile_Statics::NewProp_bIsOccupied_SetBit(void* Obj)
 	((AGridTile*)Obj)->bIsOccupied = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_bIsOccupied = { "bIsOccupied", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AGridTile), &Z_Construct_UClass_AGridTile_Statics::NewProp_bIsOccupied_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsOccupied_MetaData), NewProp_bIsOccupied_MetaData) };
-const UECodeGen_Private::FStrPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_TileType = { "TileType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Str, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridTile, TileType), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TileType_MetaData), NewProp_TileType_MetaData) };
 void Z_Construct_UClass_AGridTile_Statics::NewProp_bIsWalkable_SetBit(void* Obj)
 {
 	((AGridTile*)Obj)->bIsWalkable = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_bIsWalkable = { "bIsWalkable", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AGridTile), &Z_Construct_UClass_AGridTile_Statics::NewProp_bIsWalkable_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsWalkable_MetaData), NewProp_bIsWalkable_MetaData) };
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_TileType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UClass_AGridTile_Statics::NewProp_TileType = { "TileType", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridTile, TileType), Z_Construct_UEnum_StrategyRPG_EGridTileType, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TileType_MetaData), NewProp_TileType_MetaData) }; // 475922582
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridTile_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_FootprintMaterial,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_TileMesh,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_GridX,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_GridY,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_GridPosition,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_bIsOccupied,
-	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_TileType,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_bIsWalkable,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_TileType_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridTile_Statics::NewProp_TileType,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AGridTile_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AGridTile_Statics::DependentSingletons[])() = {
@@ -231,13 +325,16 @@ AGridTile::~AGridTile() {}
 // Begin Registration
 struct Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_Statics
 {
+	static constexpr FEnumRegisterCompiledInInfo EnumInfo[] = {
+		{ EGridTileType_StaticEnum, TEXT("EGridTileType"), &Z_Registration_Info_UEnum_EGridTileType, CONSTRUCT_RELOAD_VERSION_INFO(FEnumReloadVersionInfo, 475922582U) },
+	};
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridTile, AGridTile::StaticClass, TEXT("AGridTile"), &Z_Registration_Info_UClass_AGridTile, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridTile), 980290307U) },
+		{ Z_Construct_UClass_AGridTile, AGridTile::StaticClass, TEXT("AGridTile"), &Z_Registration_Info_UClass_AGridTile, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridTile), 638553167U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_1521998440(TEXT("/Script/StrategyRPG"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_3066623511(TEXT("/Script/StrategyRPG"),
 	Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_Statics::ClassInfo),
 	nullptr, 0,
-	nullptr, 0);
+	Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_Statics::EnumInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_GridTile_h_Statics::EnumInfo));
 // End Registration
 PRAGMA_ENABLE_DEPRECATION_WARNINGS
