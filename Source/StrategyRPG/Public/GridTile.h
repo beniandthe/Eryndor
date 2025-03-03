@@ -33,6 +33,10 @@ public:
     // Function to spawn footprints along the AI path
     void SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile);
 
+    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Combat")
+    bool bIsCombatActive; // Reference to determine if movement is grid-based
+
+
 protected:
     virtual void BeginPlay() override;
 
@@ -81,6 +85,8 @@ public:
 
     /** Handle Click Event */
     virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
+
+    bool IsValidMoveTile() const;
 };
 
 

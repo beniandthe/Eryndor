@@ -30,6 +30,13 @@ AGridTile::AGridTile()
     bIsWalkable = true;  // Default setting
 }
 
+
+
+
+
+
+
+
 // Called when the game starts or when spawned
 void AGridTile::BeginPlay()
 {
@@ -37,11 +44,24 @@ void AGridTile::BeginPlay()
 
 }
 
+
+
+
+
+
+
+
 // Called every frame (currently unused)
 void AGridTile::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 }
+
+
+
+
+
+
 
 // Initializes the tile with a position and type
 void AGridTile::InitializeTile(int32 X, int32 Y, EGridTileType Type)
@@ -59,12 +79,26 @@ void AGridTile::InitializeTile(int32 X, int32 Y, EGridTileType Type)
     UE_LOG(LogTemp, Warning, TEXT("Initialized Tile at [%d, %d]"), GridX, GridY);
 }
 
+
+
+
+
+
+
+
 // Function to change tile properties based on type
 void AGridTile::SetTileType(EGridTileType NewType)
 {
     TileType = NewType;
 
 }
+
+
+
+
+
+
+
 
 
 UNavigationPath* AGridTile::GetNavigationPath(AActor* StartActor, AActor* EndActor)
@@ -83,8 +117,18 @@ UNavigationPath* AGridTile::GetNavigationPath(AActor* StartActor, AActor* EndAct
     return NavSystem->FindPathToActorSynchronously(GetWorld(), StartActor->GetActorLocation(), EndActor);
 }
 
+
+
+
+
+
+
+
 void AGridTile::SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile)
 {
+    AGridManager* GridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+    if (!GridManager || !GridManager->bIsCombatActive) return; // Only spawn footprints during combat
+
     UNavigationPath* Path = GetNavigationPath(AIActor, TargetTile);
     if (!Path || Path->PathPoints.Num() < 2)
     {
@@ -106,12 +150,21 @@ void AGridTile::SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile)
     }
 }
 
+
+
+
+
+
+
+
 void AGridTile::NotifyActorOnClicked(FKey ButtonPressed)
 {
     Super::NotifyActorOnClicked(ButtonPressed);
 
-    // Get Grid Manager
     AGridManager* GridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+    if (!GridManager || !GridManager->bIsCombatActive) return; // Prevent tile selection if not in combat
+
+   
     if (GridManager)
     {
         GridManager->HandleTileSelection(this);
@@ -119,4 +172,14 @@ void AGridTile::NotifyActorOnClicked(FKey ButtonPressed)
 
     // Ensure tile collision remains intact
     TileMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+}
+
+
+
+
+
+
+bool AGridTile::IsValidMoveTile() const
+{
+    return !bIsOccupied && bIsWalkable;
 }

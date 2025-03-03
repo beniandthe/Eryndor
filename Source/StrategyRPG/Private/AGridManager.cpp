@@ -10,18 +10,34 @@
 #include "AIController.h"
 #include "GameFramework/Character.h"
 #include "GameFramework/CharacterMovementComponent.h"
+#include "GameFramework/Controller.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h"
+#include "Camera/CameraComponent.h"
+#include "GameFramework/SpringArmComponent.h"
+
 
 AGridManager::AGridManager()
 {
     PrimaryActorTick.bCanEverTick = false;
 }
 
+
+
+
+
+
+
 void AGridManager::BeginPlay()
 {
     Super::BeginPlay();
     GenerateGrid();
 }
+
+
+
+
+
+
 
 /** Handles selecting a hero */
 void AGridManager::SelectHero(AHero* Hero)
@@ -35,10 +51,22 @@ void AGridManager::SelectHero(AHero* Hero)
     }
 }
 
+
+
+
+
+
+
 void AGridManager::Tick(float DeltaTime)
 {
     Super::Tick(DeltaTime);
 }
+
+
+
+
+
+
 
 void AGridManager::GenerateGrid()
 {
@@ -110,9 +138,14 @@ void AGridManager::GenerateGrid()
 }
 
 
+
+
+
+
+
 void AGridManager::HighlightValidMoves(AHero* Hero)
 {
-    if (!Hero) return;
+    if (!bIsCombatActive || !Hero) return; // Only allow in combat
 
     // Clear previous move tiles
     ValidMoveTiles.Empty();
@@ -134,6 +167,10 @@ void AGridManager::HighlightValidMoves(AHero* Hero)
 
     UE_LOG(LogTemp, Warning, TEXT("Found %d Valid Move Tiles"), ValidMoveTiles.Num());
 }
+
+
+
+
 
 
 
@@ -167,82 +204,105 @@ void AGridManager::HandleTileSelection(AGridTile* SelectedTile)
 }
 
 
+
+
+
+
 void AGridManager::MoveHeroToTile(AHero* Hero, AGridTile* TargetTile)
 {
-    if (!Hero || !TargetTile) return; // Ensure both are valid
+    if (!Hero || !TargetTile) return;
 
-    UE_LOG(LogTemp, Warning, TEXT("Executing MoveHeroToTile"));
-
-    // Get the current tile of the hero
-    AGridTile* CurrentTile = Hero->CurrentTile;
-
-    // If there's a current tile, mark it as unoccupied
-    if (CurrentTile)
+    // Allow movement in combat mode only
+    if (bIsCombatActive)
     {
-        CurrentTile->bIsOccupied = false;
-    }
+        UE_LOG(LogTemp, Warning, TEXT("Executing MoveHeroToTile (Combat Mode)"));
 
-    // Update hero's reference to the new tile
-    Hero->CurrentTile = TargetTile;
-    TargetTile->bIsOccupied = true;
+        // Get the current tile of the hero
+        AGridTile* CurrentTile = Hero->CurrentTile;
 
-    // Get target location for movement
-    FVector TargetLocation = TargetTile->GetActorLocation();
-
-    // **Fix Camera Spinning Issue**: Manually handle rotation instead of relying on movement system
-    AController* LocalController = Hero->GetController();
-    if (LocalController)
-    {
-        FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Hero->GetActorLocation(), TargetLocation);
-
-        // Interpolate rotation **before moving**
-        Hero->SetActorRotation(FMath::RInterpTo(Hero->GetActorRotation(), LookAtRotation, GetWorld()->GetDeltaSeconds(), 4.0f));
-
-        // **Disable auto-rotation** (prevents camera spinning)
-        Hero->bUseControllerRotationYaw = false;
-
-        // **Ensure character movement handles rotation naturally**
-        Hero->GetCharacterMovement()->bOrientRotationToMovement = false;
-    }
-
-    // Get movement cost (1 per tile moved)
-    int32 Distance = FMath::Abs(TargetTile->GridX - Hero->CurrentTile->GridX) +
-        FMath::Abs(TargetTile->GridY - Hero->CurrentTile->GridY);
-
-    // Reduce stamina based on movement
-    Hero->Stamina = FMath::Max(0.0f, Hero->Stamina - Distance);
-
-    // Recalculate movement range dynamically
-    Hero->CalculateMovementRange(TargetTile);
-
-    // **Move hero using AI Navigation**
-    if (LocalController)
-    {
-        UE_LOG(LogTemp, Warning, TEXT("AI Controller Found. Moving..."));
-        UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
-        if (NavSystem)
+        // If there's a current tile, mark it as unoccupied
+        if (CurrentTile)
         {
-            LocalController->StopMovement();
-            UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetLocation);
-            UE_LOG(LogTemp, Warning, TEXT("Movement Command Sent"));
-
-            // **Ensure movement animation updates properly**
-            FVector MoveDirection = (TargetLocation - Hero->GetActorLocation()).GetSafeNormal();
-            Hero->GetCharacterMovement()->Velocity = MoveDirection * Hero->GetCharacterMovement()->MaxWalkSpeed;
-
-            // **?? Spawn footprints along AI path**
-            TargetTile->SpawnFootprintsAlongPath(Hero, TargetTile);
+            CurrentTile->bIsOccupied = false;
         }
-        else
+
+        // Update hero's reference to the new tile
+        Hero->CurrentTile = TargetTile;
+        TargetTile->bIsOccupied = true;
+
+        FVector TargetLocation = TargetTile->GetActorLocation();
+
+        // Manually rotate hero towards movement direction
+        AController* LocalController = Hero->GetController();
+        if (LocalController)
         {
-            UE_LOG(LogTemp, Error, TEXT("Navigation System Not Found!"));
+            FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Hero->GetActorLocation(), TargetLocation);
+            Hero->SetActorRotation(FMath::RInterpTo(Hero->GetActorRotation(), LookAtRotation, GetWorld()->GetDeltaSeconds(), 4.0f));
+
+            // Ensure character movement settings are correct
+            Hero->bUseControllerRotationYaw = false;
+            Hero->GetCharacterMovement()->bOrientRotationToMovement = false;
+        }
+
+        // Calculate movement cost and reduce stamina
+        int32 Distance = FMath::Abs(TargetTile->GridX - Hero->CurrentTile->GridX) +
+            FMath::Abs(TargetTile->GridY - Hero->CurrentTile->GridY);
+
+        Hero->Stamina = FMath::Max(0.0f, Hero->Stamina - Distance);
+
+        // Recalculate movement range dynamically
+        Hero->CalculateMovementRange(TargetTile);
+
+        // Move hero to target location
+        Hero->SetActorLocation(TargetTile->GetActorLocation());
+        Hero->CurrentTile = TargetTile;
+
+        // **Use AI Navigation for Combat**
+        if (LocalController)
+        {
+            UE_LOG(LogTemp, Warning, TEXT("AI Controller Found. Moving in Combat Mode..."));
+            UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+            if (NavSystem)
+            {
+                LocalController->StopMovement();
+                UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetLocation);
+                UE_LOG(LogTemp, Warning, TEXT("Movement Command Sent"));
+
+                FVector MoveDirection = (TargetLocation - Hero->GetActorLocation()).GetSafeNormal();
+                Hero->GetCharacterMovement()->Velocity = MoveDirection * Hero->GetCharacterMovement()->MaxWalkSpeed;
+
+                TargetTile->SpawnFootprintsAlongPath(Hero, TargetTile);
+            }
         }
     }
     else
     {
-        UE_LOG(LogTemp, Error, TEXT("AI Controller Not Found!"));
+        UE_LOG(LogTemp, Warning, TEXT("MoveHeroToTile called in Free Roam Mode - Using Click Movement"));
+        Hero->MoveToLocation(TargetTile->GetActorLocation());
+    }
+
+    // Ensure smooth camera movement following the hero only if manually detached
+    if (APlayerController* PC = Cast<APlayerController>(Hero->GetController()))
+    {
+        if (USpringArmComponent* CameraBoom = Hero->FindComponentByClass<USpringArmComponent>())
+        {
+            if (!Hero->bIsCameraDetached) // Only follow if camera hasn't been manually moved
+            {
+                FVector CameraTargetLocation = TargetTile->GetActorLocation() + FVector(0, 0, 300); // Adjust as needed
+                CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength, 1400.0f, GetWorld()->GetDeltaSeconds(), 5.0f);
+                FVector NewCameraLocation = FMath::VInterpTo(CameraBoom->GetComponentLocation(), CameraTargetLocation, GetWorld()->GetDeltaSeconds(), 3.0f);
+                CameraBoom->SetWorldLocation(NewCameraLocation);
+            }
+        }
     }
 }
+
+
+
+
+
+
+
 
 
 
@@ -318,6 +378,28 @@ TArray<AGridTile*> AGridManager::GetValidMoves(AHero* Unit, int32 MoveRange)
 
     return ValidTiles;
 }
+
+
+
+
+
+
+
+
+void AGridManager::StartCombat()
+{
+    bIsCombatActive = true;
+    UE_LOG(LogTemp, Warning, TEXT("Combat Started! Grid-based movement enabled."));
+}
+
+void AGridManager::EndCombat()
+{
+	bIsCombatActive = false;
+	UE_LOG(LogTemp, Warning, TEXT("Combat Ended! Grid-based movement disabled."));
+}
+
+
+
 
 
 

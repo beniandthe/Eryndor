@@ -10,9 +10,12 @@ PRAGMA_DISABLE_DEPRECATION_WARNINGS
 void EmptyLinkFunctionForGeneratedCodeAHero() {}
 
 // Begin Cross Module References
+COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_ACharacter();
 ENGINE_API UClass* Z_Construct_UClass_UCameraComponent_NoRegister();
 ENGINE_API UClass* Z_Construct_UClass_USpringArmComponent_NoRegister();
+ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputAction_NoRegister();
+ENHANCEDINPUT_API UClass* Z_Construct_UClass_UInputMappingContext_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridTile_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AHero();
@@ -150,6 +153,122 @@ DEFINE_FUNCTION(AHero::execModifyAttribute)
 }
 // End Class AHero Function ModifyAttribute
 
+// Begin Class AHero Function MoveHeroFree
+struct Z_Construct_UFunction_AHero_MoveHeroFree_Statics
+{
+	struct Hero_eventMoveHeroFree_Parms
+	{
+		FVector MoveDirection;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_MoveDirection;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AHero_MoveHeroFree_Statics::NewProp_MoveDirection = { "MoveDirection", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(Hero_eventMoveHeroFree_Parms, MoveDirection), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AHero_MoveHeroFree_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AHero_MoveHeroFree_Statics::NewProp_MoveDirection,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveHeroFree_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHero_MoveHeroFree_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHero, nullptr, "MoveHeroFree", nullptr, nullptr, Z_Construct_UFunction_AHero_MoveHeroFree_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveHeroFree_Statics::PropPointers), sizeof(Z_Construct_UFunction_AHero_MoveHeroFree_Statics::Hero_eventMoveHeroFree_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveHeroFree_Statics::Function_MetaDataParams), Z_Construct_UFunction_AHero_MoveHeroFree_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AHero_MoveHeroFree_Statics::Hero_eventMoveHeroFree_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AHero_MoveHeroFree()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AHero_MoveHeroFree_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AHero::execMoveHeroFree)
+{
+	P_GET_STRUCT(FVector,Z_Param_MoveDirection);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->MoveHeroFree(Z_Param_MoveDirection);
+	P_NATIVE_END;
+}
+// End Class AHero Function MoveHeroFree
+
+// Begin Class AHero Function MoveToLocation
+struct Z_Construct_UFunction_AHero_MoveToLocation_Statics
+{
+	struct Hero_eventMoveToLocation_Parms
+	{
+		FVector TargetLocation;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_TargetLocation;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AHero_MoveToLocation_Statics::NewProp_TargetLocation = { "TargetLocation", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(Hero_eventMoveToLocation_Parms, TargetLocation), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AHero_MoveToLocation_Statics::NewProp_TargetLocation,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHero_MoveToLocation_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHero, nullptr, "MoveToLocation", nullptr, nullptr, Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToLocation_Statics::PropPointers), sizeof(Z_Construct_UFunction_AHero_MoveToLocation_Statics::Hero_eventMoveToLocation_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToLocation_Statics::Function_MetaDataParams), Z_Construct_UFunction_AHero_MoveToLocation_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AHero_MoveToLocation_Statics::Hero_eventMoveToLocation_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AHero_MoveToLocation()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AHero_MoveToLocation_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AHero::execMoveToLocation)
+{
+	P_GET_STRUCT(FVector,Z_Param_TargetLocation);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->MoveToLocation(Z_Param_TargetLocation);
+	P_NATIVE_END;
+}
+// End Class AHero Function MoveToLocation
+
+// Begin Class AHero Function MoveToMouseClick
+struct Z_Construct_UFunction_AHero_MoveToMouseClick_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Movement" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHero_MoveToMouseClick_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHero, nullptr, "MoveToMouseClick", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_MoveToMouseClick_Statics::Function_MetaDataParams), Z_Construct_UFunction_AHero_MoveToMouseClick_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_AHero_MoveToMouseClick()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AHero_MoveToMouseClick_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AHero::execMoveToMouseClick)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->MoveToMouseClick();
+	P_NATIVE_END;
+}
+// End Class AHero Function MoveToMouseClick
+
 // Begin Class AHero Function MoveToTile
 struct Z_Construct_UFunction_AHero_MoveToTile_Statics
 {
@@ -198,6 +317,36 @@ DEFINE_FUNCTION(AHero::execMoveToTile)
 	P_NATIVE_END;
 }
 // End Class AHero Function MoveToTile
+
+// Begin Class AHero Function ResetCamera
+struct Z_Construct_UFunction_AHero_ResetCamera_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Camera" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AHero_ResetCamera_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AHero, nullptr, "ResetCamera", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AHero_ResetCamera_Statics::Function_MetaDataParams), Z_Construct_UFunction_AHero_ResetCamera_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_AHero_ResetCamera()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AHero_ResetCamera_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AHero::execResetCamera)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->ResetCamera();
+	P_NATIVE_END;
+}
+// End Class AHero Function ResetCamera
 
 // Begin Class AHero Function SetCurrentTile
 struct Z_Construct_UFunction_AHero_SetCurrentTile_Statics
@@ -293,7 +442,11 @@ void AHero::StaticRegisterNativesAHero()
 		{ "CalculateDerivedStats", &AHero::execCalculateDerivedStats },
 		{ "CalculateMovementRange", &AHero::execCalculateMovementRange },
 		{ "ModifyAttribute", &AHero::execModifyAttribute },
+		{ "MoveHeroFree", &AHero::execMoveHeroFree },
+		{ "MoveToLocation", &AHero::execMoveToLocation },
+		{ "MoveToMouseClick", &AHero::execMoveToMouseClick },
 		{ "MoveToTile", &AHero::execMoveToTile },
+		{ "ResetCamera", &AHero::execResetCamera },
 		{ "SetCurrentTile", &AHero::execSetCurrentTile },
 		{ "SetEquippedArmorWeight", &AHero::execSetEquippedArmorWeight },
 	};
@@ -311,6 +464,26 @@ struct Z_Construct_UClass_AHero_Statics
 		{ "HideCategories", "Navigation" },
 		{ "IncludePath", "AHero.h" },
 		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_HeroMappingContext_MetaData[] = {
+		{ "Category", "Input" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Assign the Input Mapping Context (IMC) in Blueprint */" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Assign the Input Mapping Context (IMC) in Blueprint" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_MoveClickAction_MetaData[] = {
+		{ "Category", "Input" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Assign the Input Action (IA_MoveClick) in Blueprint */" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Assign the Input Action (IA_MoveClick) in Blueprint" },
+#endif
 	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_Strength_MetaData[] = {
 		{ "Category", "Attributes" },
@@ -575,7 +748,59 @@ struct Z_Construct_UClass_AHero_Statics
 		{ "ToolTip", "Follow Camera" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsCombatActive_MetaData[] = {
+		{ "Category", "Combat" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Whether the hero is in combat */" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Whether the hero is in combat" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IA_CameraZoom_MetaData[] = {
+		{ "Category", "Input" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Input actions */" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Input actions" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IA_CameraRotate_MetaData[] = {
+		{ "Category", "Input" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_IA_CameraMove_MetaData[] = {
+		{ "Category", "Input" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CameraMoveSpeed_MetaData[] = {
+		{ "Category", "Camera" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_CameraRotationSpeed_MetaData[] = {
+		{ "Category", "Camera" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bIsCameraDetached_MetaData[] = {
+		{ "Category", "Camera" },
+		{ "ModuleRelativePath", "Public/AHero.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_bCameraFollowsHero_MetaData[] = {
+		{ "Category", "Camera" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "// True when camera is freely moving\n" },
+#endif
+		{ "ModuleRelativePath", "Public/AHero.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "True when camera is freely moving" },
+#endif
+	};
 #endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_HeroMappingContext;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_MoveClickAction;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Strength;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Dexterity;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_Intelligence;
@@ -616,13 +841,28 @@ struct Z_Construct_UClass_AHero_Statics
 	static const UECodeGen_Private::FFloatPropertyParams NewProp_EquippedArmorWeight;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_CameraBoom;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_FollowCamera;
+	static void NewProp_bIsCombatActive_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsCombatActive;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_CameraZoom;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_CameraRotate;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_IA_CameraMove;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_CameraMoveSpeed;
+	static const UECodeGen_Private::FFloatPropertyParams NewProp_CameraRotationSpeed;
+	static void NewProp_bIsCameraDetached_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsCameraDetached;
+	static void NewProp_bCameraFollowsHero_SetBit(void* Obj);
+	static const UECodeGen_Private::FBoolPropertyParams NewProp_bCameraFollowsHero;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
 		{ &Z_Construct_UFunction_AHero_CalculateDerivedStats, "CalculateDerivedStats" }, // 792913569
 		{ &Z_Construct_UFunction_AHero_CalculateMovementRange, "CalculateMovementRange" }, // 2647828238
 		{ &Z_Construct_UFunction_AHero_ModifyAttribute, "ModifyAttribute" }, // 2751578710
+		{ &Z_Construct_UFunction_AHero_MoveHeroFree, "MoveHeroFree" }, // 267442918
+		{ &Z_Construct_UFunction_AHero_MoveToLocation, "MoveToLocation" }, // 3948838682
+		{ &Z_Construct_UFunction_AHero_MoveToMouseClick, "MoveToMouseClick" }, // 1616121558
 		{ &Z_Construct_UFunction_AHero_MoveToTile, "MoveToTile" }, // 2379829400
+		{ &Z_Construct_UFunction_AHero_ResetCamera, "ResetCamera" }, // 1198772494
 		{ &Z_Construct_UFunction_AHero_SetCurrentTile, "SetCurrentTile" }, // 3176373765
 		{ &Z_Construct_UFunction_AHero_SetEquippedArmorWeight, "SetEquippedArmorWeight" }, // 1904072988
 	};
@@ -632,6 +872,8 @@ struct Z_Construct_UClass_AHero_Statics
 	};
 	static const UECodeGen_Private::FClassParams ClassParams;
 };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_HeroMappingContext = { "HeroMappingContext", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, HeroMappingContext), Z_Construct_UClass_UInputMappingContext_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_HeroMappingContext_MetaData), NewProp_HeroMappingContext_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_MoveClickAction = { "MoveClickAction", nullptr, (EPropertyFlags)0x0020080000010001, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, MoveClickAction), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_MoveClickAction_MetaData), NewProp_MoveClickAction_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_Strength = { "Strength", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, Strength), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Strength_MetaData), NewProp_Strength_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_Dexterity = { "Dexterity", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, Dexterity), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Dexterity_MetaData), NewProp_Dexterity_MetaData) };
 const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_Intelligence = { "Intelligence", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, Intelligence), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_Intelligence_MetaData), NewProp_Intelligence_MetaData) };
@@ -672,7 +914,29 @@ const UECodeGen_Private::FIntPropertyParams Z_Construct_UClass_AHero_Statics::Ne
 const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_EquippedArmorWeight = { "EquippedArmorWeight", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, EquippedArmorWeight), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_EquippedArmorWeight_MetaData), NewProp_EquippedArmorWeight_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_CameraBoom = { "CameraBoom", nullptr, (EPropertyFlags)0x00100000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, CameraBoom), Z_Construct_UClass_USpringArmComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraBoom_MetaData), NewProp_CameraBoom_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_FollowCamera = { "FollowCamera", nullptr, (EPropertyFlags)0x00100000000a001d, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, FollowCamera), Z_Construct_UClass_UCameraComponent_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_FollowCamera_MetaData), NewProp_FollowCamera_MetaData) };
+void Z_Construct_UClass_AHero_Statics::NewProp_bIsCombatActive_SetBit(void* Obj)
+{
+	((AHero*)Obj)->bIsCombatActive = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_bIsCombatActive = { "bIsCombatActive", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AHero), &Z_Construct_UClass_AHero_Statics::NewProp_bIsCombatActive_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsCombatActive_MetaData), NewProp_bIsCombatActive_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_IA_CameraZoom = { "IA_CameraZoom", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, IA_CameraZoom), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IA_CameraZoom_MetaData), NewProp_IA_CameraZoom_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_IA_CameraRotate = { "IA_CameraRotate", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, IA_CameraRotate), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IA_CameraRotate_MetaData), NewProp_IA_CameraRotate_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_IA_CameraMove = { "IA_CameraMove", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, IA_CameraMove), Z_Construct_UClass_UInputAction_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_IA_CameraMove_MetaData), NewProp_IA_CameraMove_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_CameraMoveSpeed = { "CameraMoveSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, CameraMoveSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraMoveSpeed_MetaData), NewProp_CameraMoveSpeed_MetaData) };
+const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_CameraRotationSpeed = { "CameraRotationSpeed", nullptr, (EPropertyFlags)0x0010000000000005, UECodeGen_Private::EPropertyGenFlags::Float, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AHero, CameraRotationSpeed), METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_CameraRotationSpeed_MetaData), NewProp_CameraRotationSpeed_MetaData) };
+void Z_Construct_UClass_AHero_Statics::NewProp_bIsCameraDetached_SetBit(void* Obj)
+{
+	((AHero*)Obj)->bIsCameraDetached = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_bIsCameraDetached = { "bIsCameraDetached", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AHero), &Z_Construct_UClass_AHero_Statics::NewProp_bIsCameraDetached_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsCameraDetached_MetaData), NewProp_bIsCameraDetached_MetaData) };
+void Z_Construct_UClass_AHero_Statics::NewProp_bCameraFollowsHero_SetBit(void* Obj)
+{
+	((AHero*)Obj)->bCameraFollowsHero = 1;
+}
+const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AHero_Statics::NewProp_bCameraFollowsHero = { "bCameraFollowsHero", nullptr, (EPropertyFlags)0x0010000000000004, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AHero), &Z_Construct_UClass_AHero_Statics::NewProp_bCameraFollowsHero_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bCameraFollowsHero_MetaData), NewProp_bCameraFollowsHero_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AHero_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_HeroMappingContext,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_MoveClickAction,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_Strength,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_Dexterity,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_Intelligence,
@@ -713,6 +977,14 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AHero_Sta
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_EquippedArmorWeight,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_CameraBoom,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_FollowCamera,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_bIsCombatActive,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_IA_CameraZoom,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_IA_CameraRotate,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_IA_CameraMove,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_CameraMoveSpeed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_CameraRotationSpeed,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_bIsCameraDetached,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AHero_Statics::NewProp_bCameraFollowsHero,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AHero_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AHero_Statics::DependentSingletons[])() = {
@@ -755,10 +1027,10 @@ AHero::~AHero() {}
 struct Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AHero, AHero::StaticClass, TEXT("AHero"), &Z_Registration_Info_UClass_AHero, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AHero), 3450907870U) },
+		{ Z_Construct_UClass_AHero, AHero::StaticClass, TEXT("AHero"), &Z_Registration_Info_UClass_AHero, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AHero), 923957406U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_85794072(TEXT("/Script/StrategyRPG"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_3312322700(TEXT("/Script/StrategyRPG"),
 	Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AHero_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

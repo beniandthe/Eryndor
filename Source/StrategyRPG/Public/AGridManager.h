@@ -3,6 +3,7 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GridTile.h"
+#include "GameFramework/SpringArmComponent.h"
 #include "AHero.h"
 #include "AGridManager.generated.h"
 
@@ -21,6 +22,7 @@ public:
 
 protected:
     virtual void BeginPlay() override;
+   
 
 public:
     virtual void Tick(float DeltaTime) override;
@@ -81,7 +83,14 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Grid")
     void MoveHeroToTile(AHero* Hero, AGridTile* TargetTile);
 
-   
+	void StartCombat();
+
+	void EndCombat();
+
+	/** Combat Mode */
+	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+	bool bIsCombatActive;
+
 };
 
 

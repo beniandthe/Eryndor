@@ -2,6 +2,10 @@
 
 #include "CoreMinimal.h"
 #include "GameFramework/Character.h"
+#include "InputAction.h"
+#include "InputMappingContext.h"
+#include "EnhancedInputComponent.h"
+#include "EnhancedInputSubsystems.h"
 #include "FactionTypes.h"
 #include "HeroTypes.h"
 #include "GridTile.h"
@@ -19,11 +23,28 @@ class STRATEGYRPG_API AHero : public ACharacter
 private:
 	APlayerController* PlayerController;    
 
+    float ZoomLevel;
+    FRotator CameraRotation;
+    UCameraComponent* HeroCamera;
+
 public:
     AHero();
+    void MoveFreely(FVector Destination);
+
 
 protected:
     virtual void BeginPlay() override;
+
+    virtual void SetupPlayerInputComponent(UInputComponent* PlayerInputComponent) override;
+
+    /** Assign the Input Mapping Context (IMC) in Blueprint */
+    UPROPERTY(EditDefaultsOnly, Category = "Input")
+    UInputMappingContext* HeroMappingContext;
+
+    /** Assign the Input Action (IA_MoveClick) in Blueprint */
+    UPROPERTY(EditDefaultsOnly, Category = "Input")
+    UInputAction* MoveClickAction;
+
 
 public:
     /** Primary Attributes */
@@ -174,6 +195,62 @@ public:
     // Follow Camera
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Camera")
     UCameraComponent* FollowCamera;
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void MoveHeroFree(FVector MoveDirection);
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void MoveToMouseClick();
+
+    UFUNCTION(BlueprintCallable, Category = "Movement")
+    void MoveToLocation(FVector TargetLocation);
+
+    /** Whether the hero is in combat */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Combat")
+    bool bIsCombatActive;
+
+    // Camera Zoom Variables
+    float MinZoom;
+    float MaxZoom;
+    float ZoomSpeed;
+
+    // Camera Rotation Variables
+    bool bIsRotatingCamera;
+    FVector2D LastMousePosition;
+
+    virtual void Tick(float DeltaTime) override;
+
+    // Input functions
+    void CameraZoom(const FInputActionValue& Value);
+    void CameraRotate(const FInputActionValue& Value);
+    
+    /** Input actions */
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputAction* IA_CameraZoom;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+    UInputAction* IA_CameraRotate;
+
+	UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Input")
+	UInputAction* IA_CameraMove;
+	
+	void MoveCamera(const FInputActionValue& Value);
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+    float CameraMoveSpeed;
+
+    UFUNCTION(BlueprintCallable, Category = "Camera")
+    void ResetCamera();
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Camera")
+    float CameraRotationSpeed;
+
+    UPROPERTY(BlueprintReadWrite, Category = "Camera")
+    bool bIsCameraDetached = false;  // True when camera is freely moving
+
+	UPROPERTY(BlueprintReadWrite, Category = "Camera")
+	bool bCameraFollowsHero = true;  // True when camera follows hero
+
 };
     
     
