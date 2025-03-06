@@ -1,4 +1,3 @@
-<<<<<<< Updated upstream
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\AGridManager.h
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\Enemy.h
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\AGameCharacter.h
@@ -7,17 +6,6 @@ C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Esse
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\EnemyType.h
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\HeroTypes.h
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\TurnOrderWidget.h
-=======
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\GridTile.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\TurnManager.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\HeroTypes.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\AGameCharacter.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\TurnOrderWidget.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\AHero.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\Enemy.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\AGridManager.h
-C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\EnemyType.h
->>>>>>> Stashed changes
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\FactionTypes.h
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\Public\AHero.h
 C:\Users\rossm\Downloads\Eryndor-Shattered-Essence-master\Eryndor-Shattered-Essence-master\Source\StrategyRPG\StrategyRPGCharacter.h

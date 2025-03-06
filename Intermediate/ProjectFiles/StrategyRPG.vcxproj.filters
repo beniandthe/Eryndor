@@ -66,14 +66,10 @@
     <Filter Include="Source\StrategyRPG\Private">
       <UniqueIdentifier>{D12FF939-8607-3CC9-A277-FBF3AF77915A}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGameCharacter.cpp">
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridManager.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="..\..\Source\StrategyRPG\Private\AGameCharacter.cpp">
-=======
-    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridManager.cpp">
->>>>>>> Stashed changes
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Private\AHero.cpp">
@@ -97,23 +93,13 @@
     <Filter Include="Source\StrategyRPG\Public">
       <UniqueIdentifier>{92AA3517-C28C-37F5-9891-D2FEE3A31613}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="..\..\Source\StrategyRPG\Public\AGameCharacter.h">
-      <Filter>Source\StrategyRPG\Public</Filter>
-    </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\AGridManager.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <ClCompile Include="..\..\Source\StrategyRPG\Public\AGameCharacter.h">
-=======
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\AHero.h">
->>>>>>> Stashed changes
-      <Filter>Source\StrategyRPG\Public</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\StrategyRPG\Public\Enemy.h">
-      <Filter>Source\StrategyRPG\Public</Filter>
-    </ClCompile>
-    <ClCompile Include="..\..\Source\StrategyRPG\Public\EnemyType.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\Enemy.h">
@@ -137,9 +123,6 @@
     <ClCompile Include="..\..\Source\StrategyRPG\Public\TurnOrderWidget.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
-<<<<<<< Updated upstream
     <None Include="cpp.hint" />
-=======
->>>>>>> Stashed changes
   </ItemGroup>
 </Project>
