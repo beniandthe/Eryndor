@@ -1,4 +1,6 @@
+
 #include "AHero.h"
+#include "Enemy.h"
 #include "AGridManager.h"
 #include "GameFramework/Actor.h"
 #include "Kismet/KismetMathLibrary.h"
@@ -8,6 +10,7 @@
 #include "AIController.h"
 #include "Blueprint/AIBlueprintHelperLibrary.h" 
 #include "GameFramework/SpringArmComponent.h"
+#include "AGameCharacter.h"
 #include "Camera/CameraComponent.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
@@ -17,6 +20,7 @@
 #include "InputAction.h"
 #include "Engine/World.h"
 #include "Engine/LocalPlayer.h"
+#include "TimerManager.h"
 #include "GameFramework/CharacterMovementComponent.h"
 #include "Components/CapsuleComponent.h"
 
@@ -52,7 +56,7 @@ AHero::AHero()
     FollowCamera->SetupAttachment(CameraBoom);  // Attach Camera to the Boom
     FollowCamera->bUsePawnControlRotation = false;  // Camera does not rotate with character
 
- 
+
 
     bIsRotatingCamera = false;
 
@@ -82,8 +86,13 @@ AHero::AHero()
     // Derived Stats Initialization
     CalculateDerivedStats();
 
-	MovementRange; // Movement range based on Stamina
+    MovementRange; // Movement range based on Stamina
     EquippedArmorWeight = 0.0f;
+
+    ActionPoints = 1;      // Default 1 Action per turn
+    MovementPoints = 6;    // Default 6 Tiles of movement
+    CurrentTurnState = ETurnState::Waiting; // Default state
+	bIsEnemy = false; // Ensure the game knows this is a hero
 }
 
 
@@ -95,49 +104,37 @@ AHero::AHero()
 
 void AHero::BeginPlay()
 {
-    Super::BeginPlay();
+    Super::BeginPlay(); // Calls AGameCharacter::BeginPlay()
 
     // Cache the camera reference
     HeroCamera = FindComponentByClass<UCameraComponent>();
 
-    CalculateMovementRange(CurrentTile);
-
-
-    // Ensure the hero gets control from the correct Player Controller
+    // Get the player controller
     APlayerController* PC = Cast<APlayerController>(GetController());
     if (PC)
     {
+        // Set up input mode to allow both UI and game controls
+        FInputModeGameAndUI InputMode;
+        InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
+        InputMode.SetHideCursorDuringCapture(false);
+        PC->SetInputMode(InputMode);
+        PC->bShowMouseCursor = true;
 
-      // Ensure keyboard input is enabled
-      FInputModeGameAndUI InputMode;
-      InputMode.SetLockMouseToViewportBehavior(EMouseLockMode::DoNotLock);
-      InputMode.SetHideCursorDuringCapture(false);
-      PC->SetInputMode(InputMode);
-      PC->bShowMouseCursor = true; // Ensure the mouse is visible
+        // Apply Enhanced Input Mapping
+        UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
+        if (Subsystem && HeroMappingContext)
+        {
+            Subsystem->AddMappingContext(HeroMappingContext, 0);
+        }
 
-      UEnhancedInputLocalPlayerSubsystem* Subsystem = ULocalPlayer::GetSubsystem<UEnhancedInputLocalPlayerSubsystem>(PC->GetLocalPlayer());
-      if (Subsystem && HeroMappingContext)
-            {
-              Subsystem->AddMappingContext(HeroMappingContext, 0);
-            }
-      
-      EnableInput(PC);
+        EnableInput(PC);
     }
 
-
+    // Set movement settings for player control
     bUseControllerRotationYaw = false;
-
-    // Allow character to orient based on movement direction
     GetCharacterMovement()->bOrientRotationToMovement = true;
-    GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f); // Adjust turn speed
-
-    // Find the Grid Manager
-    AGridManager* LocalGridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
-    GridManager = LocalGridManager;
-
-    CalculateDerivedStats();
+    GetCharacterMovement()->RotationRate = FRotator(0.f, 540.f, 0.f);
 }
-
 
 
 
@@ -153,11 +150,10 @@ void AHero::NotifyActorOnClicked(FKey ButtonPressed)
     ResetCamera(); // Reset camera position
 
     AGridManager* LocalGridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
-
     if (LocalGridManager)
     {
         UE_LOG(LogTemp, Warning, TEXT("Hero Selected"));
-        GridManager->SelectHero(this);
+        LocalGridManager->SelectHero(this);
     }
 
     if (APlayerController* PC = Cast<APlayerController>(GetController()))
@@ -176,10 +172,35 @@ void AHero::NotifyActorOnClicked(FKey ButtonPressed)
 
 
 
-int32 AHero::GetMoveRange() const
+void AHero::SelectAction(ETurnState Action)
 {
-    // Example logic to determine move range
-    return Dexterity / 2; // Example: Move range based on Dexterity
+    if (!bIsCombatActive) return;
+
+    switch (Action)
+    {
+    case ETurnState::Moving:
+        CurrentTurnState = ETurnState::Moving;
+        UE_LOG(LogTemp, Warning, TEXT("%s is selecting movement."), *GetName());
+        break;
+
+    case ETurnState::Attacking:
+        CurrentTurnState = ETurnState::Attacking;
+        UE_LOG(LogTemp, Warning, TEXT("%s is preparing to attack."), *GetName());
+        break;
+
+    case ETurnState::Ended:
+        UE_LOG(LogTemp, Warning, TEXT("%s has ended their turn."), *GetName());
+        CurrentTurnState = ETurnState::Ended;
+        GetWorld()->GetTimerManager().SetTimerForNextTick([this]()
+            {
+                ATurnManager* TurnManager = Cast<ATurnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ATurnManager::StaticClass()));
+                if (TurnManager)
+                {
+                    TurnManager->NextTurn();
+                }
+            });
+        break;
+    }
 }
 
 
@@ -188,92 +209,16 @@ int32 AHero::GetMoveRange() const
 
 
 
-
-
-void AHero::MoveToTile(AGridTile* TargetTile)
+void AHero::CalculateClassSpecificStats()
 {
-    AGridManager* LocalGridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
-    if (!LocalGridManager || !LocalGridManager->bIsCombatActive) return; // Only allow movement in combat
-
-    if (!TargetTile) return;
-
-    AController* LocalController = GetController();
-    if (!LocalController)
-    {
-        UE_LOG(LogTemp, Error, TEXT("MoveToTile: No valid Controller found!"));
-        return;
-    }
-
-    UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
-    if (!NavSystem)
-    {
-        UE_LOG(LogTemp, Error, TEXT("MoveToTile: No valid Navigation System found!"));
-        return;
-    }
-
-    LocalController->StopMovement();
-    UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetTile->GetActorLocation());
-
-    CurrentTile = TargetTile;
-    UE_LOG(LogTemp, Warning, TEXT("Hero moved to tile at %s"), *TargetTile->GetActorLocation().ToString());
-}
-
-
-
-
-
-
-
-
-
-
-void AHero::CalculateDerivedStats()
-{
-    // Health, Stamina, and Essence Scaling
-    Health = Endurance * 12.0f;      // More endurance = more HP
-    Stamina = Endurance * 6.0f;      // More endurance = more stamina
-    Essence = Intelligence * 8.0f;   // More intelligence = more essence
-
-    // Leadership & Tactical Abilities
-    Leadership = Charisma * 2;
-    Diplomacy = Charisma + Perception;
-    Tactics = Intelligence + Perception;
-    Willpower = Intelligence + Endurance;
-    Stealth = Dexterity + Perception;
-
-    // Initiative Calculation
-    Initiative = Dexterity * 2.0f;
-    Initiative += Initiative * (Tactics * 0.02f); // Bonus from Tactics
-
-    // Evasion & Critical Hit Calculations
-    Evasion = Dexterity * 1.5f + Luck * 0.5f;
-    CriticalChance = Luck * 1.5f + Perception * 0.5f;
-    CriticalDamage = 150.0f + (Luck * 1.5f); // Default crits do 150% damage
-
-    // Resistances
-    MagicResistance = Intelligence * 1.2f + Faith * 0.8f;
-    PhysicalResistance = Endurance * 1.5f;
-
-    // Offensive Stats
-    AttackPower = Strength * 2.0f;
-    SpellPower = Intelligence * 2.5f;
-
-    // Morality-Based Essence Pools
+    // Morality-Based Essence Pools (Only for Heroes)
     LightEssence = FMath::Clamp(Faith * 2.0f - DarkEssenceThreshold, 0.0f, 100.0f);
     DarkEssence = FMath::Clamp(Faith * 2.0f - LightEssenceThreshold, 0.0f, 100.0f);
 
-    // Base stamina is derived from endurance and dexterity
-    float BaseStamina = (Endurance * 6.0f) + (Dexterity * 2.0f);
-
-    // Apply armor weight penalty (Heavier armor reduces stamina)
-    float ArmorPenalty = EquippedArmorWeight * 0.5f;
-
-    // Final Stamina Calculation
-    Stamina = FMath::Max(5.0f, BaseStamina - ArmorPenalty); // Min stamina is 5
-
-    // Update movement range dynamically
+    // Recalculate movement range dynamically
     CalculateMovementRange(CurrentTile);
 }
+
 
 
 
@@ -301,36 +246,163 @@ void AHero::ModifyAttribute(FString AttributeName, int32 Value)
 
 
 
+void AHero::OnAttributeModified(FString AttributeName, float Value)
+{
+    // Only heroes have morality-based stats, so we recalculate thresholds
+    LightEssence = FMath::Clamp(Faith * 2.0f - DarkEssenceThreshold, 0.0f, 100.0f);
+    DarkEssence = FMath::Clamp(Faith * 2.0f - LightEssenceThreshold, 0.0f, 100.0f);
+}
+
+
+
+
+void AHero::Attack(AGameCharacter* Target)
+{
+    if (!bIsCombatActive || ActionPoints <= 0 || !Target)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Attack Failed: No AP or invalid target."));
+        return;
+    }
+
+    // Calculate damage (basic example - this can be extended later)
+    float Damage = AttackPower - Target->PhysicalResistance;
+
+    if (Damage > 0)
+    {
+        Target->Health -= Damage;
+        UE_LOG(LogTemp, Warning, TEXT("%s attacks %s for %.2f damage!"), *GetName(), *Target->GetName(), Damage);
+    }
+    else
+    {
+        UE_LOG(LogTemp, Warning, TEXT("%s's attack was ineffective against %s!"), *GetName(), *Target->GetName());
+    }
+
+    // Deduct Action Points
+    ActionPoints--;
+
+    // Check if Target is Dead
+    if (Target->Health <= 0)
+    {
+        Target->Destroy();
+        UE_LOG(LogTemp, Warning, TEXT("%s has been defeated!"), *Target->GetName());
+    }
+
+    // If no AP left, end turn
+    if (ActionPoints == 0 && MovementPoints == 0)
+    {
+        EndTurn();
+    }
+}
+
+
+
+
+void AHero::EndTurn()
+{
+    if (!bIsCombatActive)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("EndTurn Failed: Combat is not active."));
+        return;
+    }
+
+    UE_LOG(LogTemp, Warning, TEXT("%s ends their turn!"), *GetName());
+
+    // Reset Action & Movement Points
+    ActionPoints = 0;
+    MovementPoints = 0;
+    CurrentTurnState = ETurnState::Ended;
+
+    // Notify Turn Manager
+    ATurnManager* TurnManager = Cast<ATurnManager>(UGameplayStatics::GetActorOfClass(GetWorld(), ATurnManager::StaticClass()));
+    if (TurnManager)
+    {
+        TurnManager->NextTurn();
+    }
+}
+
+
+
+
+
+void AHero::MoveToTile(AGridTile* TargetTile)
+{
+    if (!bIsCombatActive || !TargetTile || MovementPoints <= 0)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("MoveToTile Failed: Invalid target or no MP left."));
+        return;
+    }
+
+    // Calculate movement cost
+    int32 DistanceX = FMath::Abs(TargetTile->GridX - CurrentTile->GridX);
+    int32 DistanceY = FMath::Abs(TargetTile->GridY - CurrentTile->GridY);
+    int32 TilesToMove = DistanceX + DistanceY;
+
+    if (TilesToMove > MovementPoints)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("MoveToTile Failed: Not enough MP to move."));
+        return;
+    }
+
+    // Deduct Movement Points
+    MovementPoints -= TilesToMove;
+
+    // Free old tile
+    if (CurrentTile)
+    {
+        CurrentTile->OccupyingUnit = nullptr;
+    }
+
+    // Move and assign to the new tile
+    SetActorLocation(TargetTile->GetActorLocation());
+    CurrentTile = TargetTile;
+    TargetTile->OccupyingUnit = this;
+
+    UE_LOG(LogTemp, Warning, TEXT("Hero moved %d tiles. Remaining MP: %d"), TilesToMove, MovementPoints);
+
+    // If out of movement, switch turn state
+    if (MovementPoints == 0)
+    {
+        CurrentTurnState = ETurnState::Waiting;
+    }
+}
+
+
 
 
 void AHero::CalculateMovementRange(AGridTile* Tile)
 {
-    // Base movement range = Stamina / 3
-    float BaseMoveRange = Stamina / 3.0f;
+    if (!Tile) return;
+
+    // Start with the base calculation from AGameCharacter
+    Super::CalculateMovementRange(Tile);
 
     // Apply armor penalty (heavy armor slows movement)
     float ArmorMovePenalty = EquippedArmorWeight * 0.2f;
-    BaseMoveRange -= ArmorMovePenalty;
+    MovementRange = FMath::Max(1, MovementRange - FMath::RoundToInt(ArmorMovePenalty));
 
-    // Adjust movement range based on terrain difficulty
-    float TerrainModifier = 1.0f; // Default (Normal terrain)
+    UE_LOG(LogTemp, Warning, TEXT("Hero Movement Range (after armor penalty): %d"), MovementRange);
+}
 
-    if (Tile)
-    {
-        if (Tile->TileType == EGridTileType::Water) { TerrainModifier = 0.5f; }   // Water halves movement
-        else if (Tile->TileType == EGridTileType::Swamp) { TerrainModifier = 0.7f; } // Swamp reduces movement by 30%
-        else if (Tile->TileType == EGridTileType::Snow) { TerrainModifier = 0.6f; } // Snow reduces movement by 40%
-		else if (Tile->TileType == EGridTileType::Mountain) { TerrainModifier = 0.4f; } // Mountains reduce movement by 60%
-		else if (Tile->TileType == EGridTileType::Forest) { TerrainModifier = 0.8f; } // Forests reduce movement by 20%
-		else if (Tile->TileType == EGridTileType::Desert) { TerrainModifier = 0.9f; } // Deserts reduce movement by 10%
-    }
 
-    // Apply terrain modifier
-    BaseMoveRange *= TerrainModifier;
 
-    // Ensure minimum movement range is at least 1
-    MovementRange = FMath::Max(1, FMath::RoundToInt(BaseMoveRange));
-    UE_LOG(LogTemp, Warning, TEXT("Hero Movement Range: %d"), MovementRange);
+
+
+
+int32 AHero::GetMoveRange() const
+{
+    int32 BaseRange = Super::GetMoveRange();
+
+    // Heroes might get extra movement based on gear, buffs, or skills
+    int32 BonusFromArmor = (EquippedArmorWeight > 0) ? -1 : 0; // Heavy armor slows heroes
+    return FMath::Max(1, BaseRange + BonusFromArmor);
+}
+
+
+
+void AHero::PerformAction()
+{
+    // Placeholder for future player-controlled hero actions
+    UE_LOG(LogTemp, Warning, TEXT("%s is awaiting player input!"), *GetName());
 }
 
 
@@ -355,8 +427,15 @@ void AHero::SetCurrentTile(AGridTile* NewTile)
 
 
 
-void AHero::MoveFreely(FVector Destination)
+void AHero::MoveFreely(FVector Destination, bool bIsMouseClick)
 {
+    //  Prevent movement if combat is active & it's not the hero's turn
+    if (bIsCombatActive && (CurrentTurnState != ETurnState::Moving || MovementPoints <= 0))
+    {
+        UE_LOG(LogTemp, Warning, TEXT("MoveFreely: Cannot move. Either it's not the hero's turn or MP is 0."));
+        return;
+    }
+
     AController* LocalController = GetController();
     if (!LocalController)
     {
@@ -364,6 +443,19 @@ void AHero::MoveFreely(FVector Destination)
         return;
     }
 
+    //  Handle mouse click movement
+    if (bIsMouseClick)
+    {
+        FHitResult HitResult;
+        APlayerController* PC = Cast<APlayerController>(LocalController);
+        if (PC && PC->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult))
+        {
+            Destination = HitResult.Location;
+            UE_LOG(LogTemp, Warning, TEXT("Clicked Location: %s"), *Destination.ToString());
+        }
+    }
+
+    //  Use AI Navigation to move
     UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
     if (!NavSystem)
     {
@@ -374,27 +466,22 @@ void AHero::MoveFreely(FVector Destination)
     LocalController->StopMovement();
     UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, Destination);
 
-    UE_LOG(LogTemp, Warning, TEXT("Hero moving freely to %s"), *Destination.ToString());
+    //  Deduct Movement Points (MP) if in combat
+    if (bIsCombatActive)
+    {
+        MovementPoints--; // Deduct 1 MP per movement
+        UE_LOG(LogTemp, Warning, TEXT("Hero moved freely to %s. Remaining MP: %d"), *Destination.ToString(), MovementPoints);
+
+        //  If MP = 0, prevent further movement
+        if (MovementPoints == 0)
+        {
+            CurrentTurnState = ETurnState::Waiting;
+        }
+    }
+
+    //  Check for enemies after moving
+    CheckForEnemiesNearby();
 }
-
-
-
-
-
-
-
-void AHero::MoveHeroFree(FVector MoveDirection)
-{
-    if (bIsCombatActive) return; // Prevent movement if in combat
-
-    // Normalize movement input
-    FVector Direction = MoveDirection.GetSafeNormal();
-
-    // Apply movement input
-    AddMovementInput(Direction, 1.0f);
-}
-
-
 
 
 
@@ -409,40 +496,13 @@ void AHero::MoveToMouseClick()
     if (PC->GetHitResultUnderCursor(ECollisionChannel::ECC_Visibility, false, HitResult))
     {
         FVector ClickLocation = HitResult.Location;
-
         UE_LOG(LogTemp, Warning, TEXT("Clicked Location: %s"), *ClickLocation.ToString());
 
-        // Use AI Navigation to move the hero
-        MoveToLocation(ClickLocation);
+        // Move using the new MoveFreely function
+        MoveFreely(ClickLocation, true);
     }
 }
 
-
-
-
-
-
-
-void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
-{
-    Super::SetupPlayerInputComponent(PlayerInputComponent);
-
-    if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
-    {
-        EnhancedInput->BindAction(MoveClickAction, ETriggerEvent::Triggered, this, &AHero::MoveToMouseClick);
-
-        // Bind Camera Zoom (Mouse Scroll)
-        EnhancedInput->BindAction(IA_CameraZoom, ETriggerEvent::Triggered, this, &AHero::CameraZoom);
-
-        // Bind Camera Rotate (Hold Middle Mouse + Move Mouse)
-        EnhancedInput->BindAction(IA_CameraRotate, ETriggerEvent::Triggered, this, &AHero::CameraRotate);
-
-        // Bind Camera Movement (WASD)
-        EnhancedInput->BindAction(IA_CameraMove, ETriggerEvent::Triggered, this, &AHero::MoveCamera);
-    }
-
-   
-}
 
 
 
@@ -469,6 +529,36 @@ void AHero::MoveToLocation(FVector TargetLocation)
         SetActorRotation(FMath::RInterpTo(GetActorRotation(), LookAtRotation, GetWorld()->GetDeltaSeconds(), 10.0f));
     }
 }
+
+
+
+
+
+
+void AHero::SetupPlayerInputComponent(UInputComponent* PlayerInputComponent)
+{
+    Super::SetupPlayerInputComponent(PlayerInputComponent);
+
+    if (UEnhancedInputComponent* EnhancedInput = Cast<UEnhancedInputComponent>(PlayerInputComponent))
+    {
+        EnhancedInput->BindAction(MoveClickAction, ETriggerEvent::Triggered, this, &AHero::MoveToMouseClick);
+
+        // Bind Camera Zoom (Mouse Scroll)
+        EnhancedInput->BindAction(IA_CameraZoom, ETriggerEvent::Triggered, this, &AHero::CameraZoom);
+
+        // Bind Camera Rotate (Hold Middle Mouse + Move Mouse)
+        EnhancedInput->BindAction(IA_CameraRotate, ETriggerEvent::Triggered, this, &AHero::CameraRotate);
+
+        // Bind Camera Movement (WASD)
+        EnhancedInput->BindAction(IA_CameraMove, ETriggerEvent::Triggered, this, &AHero::MoveCamera);
+    }
+
+
+}
+
+
+
+
 
 
 
@@ -633,13 +723,28 @@ void AHero::ResetCamera()
 
 
 
-
-
-
-
-void AHero::SetEquippedArmorWeight(float NewWeight)
+void AHero::CheckForEnemiesNearby()
 {
-    EquippedArmorWeight = NewWeight;
-    CalculateMovementRange(CurrentTile); // Recalculate movement range with new weight
+    if (!GridManager) return;
+
+    UE_LOG(LogTemp, Warning, TEXT("Checking for nearby enemies..."));
+
+    for (AGridTile* Tile : GridManager->GridTiles)
+    {
+        // Check if the tile is occupied AND if the occupying unit is an AEnemy
+        if (Tile && Tile->OccupyingUnit && Cast<AEnemy>(Tile->OccupyingUnit))
+        {
+            float Distance = FVector::Dist(this->GetActorLocation(), Tile->OccupyingUnit->GetActorLocation());
+            UE_LOG(LogTemp, Warning, TEXT("Enemy detected at distance: %f"), Distance);
+
+            if (Distance <= 600.f) // Adjust detection range as needed
+            {
+                UE_LOG(LogTemp, Warning, TEXT("Enemy in range! Starting combat..."));
+                GridManager->bIsCombatActive = true;
+                GridManager->StartCombat();
+                return;
+            }
+        }
+    }
 }
 

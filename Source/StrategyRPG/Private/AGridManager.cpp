@@ -1,6 +1,6 @@
 #include "AGridManager.h"
 #include "GridTile.h"
-#include "AGridUnit.h"
+#include "AGameCharacter.h"
 #include "AHero.h"
 #include "Engine/World.h"
 #include "Kismet/GameplayStatics.h"
@@ -19,6 +19,7 @@
 AGridManager::AGridManager()
 {
     PrimaryActorTick.bCanEverTick = false;
+	bIsCombatActive = false;
 }
 
 
@@ -31,6 +32,9 @@ void AGridManager::BeginPlay()
 {
     Super::BeginPlay();
     GenerateGrid();
+    // TEMPORARY: Spawn a test enemy at game start
+    SpawnEnemyUnit(EEnemyType::GoblinMelee);
+
 }
 
 
@@ -51,6 +55,21 @@ void AGridManager::SelectHero(AHero* Hero)
     }
 }
 
+
+
+
+
+AGridTile* AGridManager::FindTileAtLocation(FVector Location)
+{
+    for (AGridTile* Tile : GridTiles) // Loop through all grid tiles
+    {
+        if (Tile && FVector::Dist(Tile->GetActorLocation(), Location) < TileSize * 0.5f) // Check if within tile bounds
+        {
+            return Tile;
+        }
+    }
+    return nullptr; // No valid tile found
+}
 
 
 
@@ -125,7 +144,13 @@ void AGridManager::GenerateGrid()
             {
                 NewTile->InitializeTile(X, Y, EGridTileType::Custom);
                 GridTiles.Add(NewTile);
+                NewTile->bIsOccupied = false;  // Ensure tile starts as unoccupied
+                NewTile->OccupyingUnit = nullptr; // Clear any references
+
                 TileCount++;
+
+                // Debug log to confirm tile initialization
+                UE_LOG(LogTemp, Warning, TEXT("Initialized Tile at [%d, %d]"), X, Y);
             }
             else
             {
@@ -136,6 +161,7 @@ void AGridManager::GenerateGrid()
 
     UE_LOG(LogTemp, Warning, TEXT("GenerateGrid: Successfully generated %d tiles."), TileCount);
 }
+
 
 
 
@@ -174,7 +200,7 @@ void AGridManager::HighlightValidMoves(AHero* Hero)
 
 
 
-void AGridManager::SelectUnit(AGridUnit* Unit)
+void AGridManager::SelectUnit(ACharacter* Unit)
 {
     if (Unit)
     {
@@ -184,22 +210,19 @@ void AGridManager::SelectUnit(AGridUnit* Unit)
     }
 }
 
-/** Handle Tile Clicks */
 void AGridManager::HandleTileSelection(AGridTile* SelectedTile)
 {
     if (!SelectedTile || !SelectedHero) return;
 
-    UE_LOG(LogTemp, Warning, TEXT("HandleTileSelection called for tile: %s"), *SelectedTile->GetName());
-
     // Check if tile is within valid moves
     if (ValidMoveTiles.Contains(SelectedTile))
     {
-        UE_LOG(LogTemp, Warning, TEXT("Moving Hero to Tile: %s"), *SelectedTile->GetName());
         MoveHeroToTile(SelectedHero, SelectedTile);
     }
     else
     {
         UE_LOG(LogTemp, Warning, TEXT("Tile not in valid move range"));
+        // TODO: Add UI Feedback to show invalid move visually
     }
 }
 
@@ -211,90 +234,79 @@ void AGridManager::HandleTileSelection(AGridTile* SelectedTile)
 void AGridManager::MoveHeroToTile(AHero* Hero, AGridTile* TargetTile)
 {
     if (!Hero || !TargetTile) return;
+    if (!bIsCombatActive) return; // Ensure movement only happens in combat
 
-    // Allow movement in combat mode only
-    if (bIsCombatActive)
+    // Validate path before moving
+    UNavigationPath* Path = UNavigationSystemV1::GetCurrent(GetWorld())
+        ->FindPathToLocationSynchronously(GetWorld(), Hero->GetActorLocation(), TargetTile->GetActorLocation());
+    if (!Path || Path->PathPoints.Num() == 0)
     {
-        UE_LOG(LogTemp, Warning, TEXT("Executing MoveHeroToTile (Combat Mode)"));
-
-        // Get the current tile of the hero
-        AGridTile* CurrentTile = Hero->CurrentTile;
-
-        // If there's a current tile, mark it as unoccupied
-        if (CurrentTile)
-        {
-            CurrentTile->bIsOccupied = false;
-        }
-
-        // Update hero's reference to the new tile
-        Hero->CurrentTile = TargetTile;
-        TargetTile->bIsOccupied = true;
-
-        FVector TargetLocation = TargetTile->GetActorLocation();
-
-        // Manually rotate hero towards movement direction
-        AController* LocalController = Hero->GetController();
-        if (LocalController)
-        {
-            FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Hero->GetActorLocation(), TargetLocation);
-            Hero->SetActorRotation(FMath::RInterpTo(Hero->GetActorRotation(), LookAtRotation, GetWorld()->GetDeltaSeconds(), 4.0f));
-
-            // Ensure character movement settings are correct
-            Hero->bUseControllerRotationYaw = false;
-            Hero->GetCharacterMovement()->bOrientRotationToMovement = false;
-        }
-
-        // Calculate movement cost and reduce stamina
-        int32 Distance = FMath::Abs(TargetTile->GridX - Hero->CurrentTile->GridX) +
-            FMath::Abs(TargetTile->GridY - Hero->CurrentTile->GridY);
-
-        Hero->Stamina = FMath::Max(0.0f, Hero->Stamina - Distance);
-
-        // Recalculate movement range dynamically
-        Hero->CalculateMovementRange(TargetTile);
-
-        // Move hero to target location
-        Hero->SetActorLocation(TargetTile->GetActorLocation());
-        Hero->CurrentTile = TargetTile;
-
-        // **Use AI Navigation for Combat**
-        if (LocalController)
-        {
-            UE_LOG(LogTemp, Warning, TEXT("AI Controller Found. Moving in Combat Mode..."));
-            UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
-            if (NavSystem)
-            {
-                LocalController->StopMovement();
-                UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetLocation);
-                UE_LOG(LogTemp, Warning, TEXT("Movement Command Sent"));
-
-                FVector MoveDirection = (TargetLocation - Hero->GetActorLocation()).GetSafeNormal();
-                Hero->GetCharacterMovement()->Velocity = MoveDirection * Hero->GetCharacterMovement()->MaxWalkSpeed;
-
-                TargetTile->SpawnFootprintsAlongPath(Hero, TargetTile);
-            }
-        }
-    }
-    else
-    {
-        UE_LOG(LogTemp, Warning, TEXT("MoveHeroToTile called in Free Roam Mode - Using Click Movement"));
-        Hero->MoveToLocation(TargetTile->GetActorLocation());
+        UE_LOG(LogTemp, Error, TEXT("MoveHeroToTile: No valid path found!"));
+        return;
     }
 
-    // Ensure smooth camera movement following the hero only if manually detached
-    if (APlayerController* PC = Cast<APlayerController>(Hero->GetController()))
+    UE_LOG(LogTemp, Warning, TEXT("Moving Hero to Tile: %s"), *TargetTile->GetName());
+
+    // Mark the current tile as unoccupied if the hero was on it
+    if (Hero->CurrentTile && Hero->CurrentTile->OccupyingUnit == Hero) // ? No need to cast
     {
-        if (USpringArmComponent* CameraBoom = Hero->FindComponentByClass<USpringArmComponent>())
+        Hero->CurrentTile->bIsOccupied = false;
+        Hero->CurrentTile->OccupyingUnit = nullptr;
+    }
+
+    // Assign the hero to the new tile
+    Hero->CurrentTile = TargetTile;
+    TargetTile->bIsOccupied = true;
+    TargetTile->OccupyingUnit = Hero; // ? No need for casting
+
+    FVector TargetLocation = TargetTile->GetActorLocation();
+
+    // Manually rotate hero towards movement direction
+    AController* LocalController = Hero->GetController();
+    if (LocalController)
+    {
+        FRotator LookAtRotation = UKismetMathLibrary::FindLookAtRotation(Hero->GetActorLocation(), TargetLocation);
+        Hero->SetActorRotation(FMath::RInterpTo(Hero->GetActorRotation(), LookAtRotation, GetWorld()->GetDeltaSeconds(), 4.0f));
+
+        // Ensure character movement settings are correct
+        Hero->bUseControllerRotationYaw = false;
+        Hero->GetCharacterMovement()->bOrientRotationToMovement = false;
+    }
+
+    // Calculate movement cost and reduce stamina
+    int32 Distance = FMath::Abs(TargetTile->GridX - Hero->CurrentTile->GridX) +
+        FMath::Abs(TargetTile->GridY - Hero->CurrentTile->GridY);
+    Hero->Stamina = FMath::Max(0.0f, Hero->Stamina - Distance);
+
+    // Recalculate movement range dynamically
+    Hero->CalculateMovementRange(TargetTile);
+
+    // Move hero to target location
+    Hero->SetActorLocation(TargetTile->GetActorLocation());
+
+    // **Use AI Navigation for Combat**
+    if (LocalController)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("AI Controller Found. Moving in Combat Mode..."));
+        UNavigationSystemV1* NavSystem = UNavigationSystemV1::GetCurrent(GetWorld());
+        if (NavSystem)
         {
-            if (!Hero->bIsCameraDetached) // Only follow if camera hasn't been manually moved
-            {
-                FVector CameraTargetLocation = TargetTile->GetActorLocation() + FVector(0, 0, 300); // Adjust as needed
-                CameraBoom->TargetArmLength = FMath::FInterpTo(CameraBoom->TargetArmLength, 1400.0f, GetWorld()->GetDeltaSeconds(), 5.0f);
-                FVector NewCameraLocation = FMath::VInterpTo(CameraBoom->GetComponentLocation(), CameraTargetLocation, GetWorld()->GetDeltaSeconds(), 3.0f);
-                CameraBoom->SetWorldLocation(NewCameraLocation);
-            }
+            LocalController->StopMovement();
+            UAIBlueprintHelperLibrary::SimpleMoveToLocation(LocalController, TargetLocation);
+            UE_LOG(LogTemp, Warning, TEXT("Movement Command Sent"));
+        }
+
+        // Rotate to face movement direction
+        FVector MoveDirection = (TargetLocation - Hero->GetActorLocation()).GetSafeNormal();
+        if (!MoveDirection.IsNearlyZero())
+        {
+            FRotator LookAtRotation = FRotationMatrix::MakeFromX(MoveDirection).Rotator();
+            Hero->SetActorRotation(FMath::RInterpTo(Hero->GetActorRotation(), LookAtRotation, GetWorld()->GetDeltaSeconds(), 10.0f));
         }
     }
+
+    // Check for enemies nearby after moving
+    Hero->CheckForEnemiesNearby();
 }
 
 
@@ -386,17 +398,172 @@ TArray<AGridTile*> AGridManager::GetValidMoves(AHero* Unit, int32 MoveRange)
 
 
 
-void AGridManager::StartCombat()
-{
-    bIsCombatActive = true;
-    UE_LOG(LogTemp, Warning, TEXT("Combat Started! Grid-based movement enabled."));
-}
 
 void AGridManager::EndCombat()
 {
-	bIsCombatActive = false;
-	UE_LOG(LogTemp, Warning, TEXT("Combat Ended! Grid-based movement disabled."));
+    if (!bIsCombatActive) return;
+
+    bIsCombatActive = false;
+    UE_LOG(LogTemp, Warning, TEXT("Combat Ended!"));
 }
+
+
+
+
+
+
+
+void AGridManager::StartCombat()
+{
+    if (bIsCombatActive) return;
+
+    bIsCombatActive = true;
+    UE_LOG(LogTemp, Warning, TEXT("Combat Started!"));
+
+    // Ensure TurnManager is initialized
+    if (!TurnManager)
+    {
+        TurnManager = GetWorld()->SpawnActor<ATurnManager>();
+    }
+
+    if (TurnManager)
+    {
+        UE_LOG(LogTemp, Warning, TEXT("Turn Manager successfully initialized."));
+        TurnManager->StartCombat(this);
+    }
+}
+
+
+
+
+
+
+
+
+void AGridManager::SpawnEnemyUnit(EEnemyType EnemyType)
+{
+    if (!GridTiles.Num()) return;
+
+    // Pick a random available tile
+    AGridTile* RandomTile = nullptr;
+    int32 Attempts = 0; // Prevent infinite loops
+    while ((!RandomTile || RandomTile->bIsOccupied) && Attempts < 100)
+    {
+        RandomTile = GridTiles[FMath::RandRange(0, GridTiles.Num() - 1)];
+        Attempts++;
+    }
+
+    // Ensure the selected tile is valid
+    if (!RandomTile || RandomTile->bIsOccupied)
+    {
+        UE_LOG(LogTemp, Error, TEXT("Failed to find a valid tile for enemy spawn!"));
+        return;
+    }
+
+    // Determine which enemy class to spawn
+    TSubclassOf<AEnemy> EnemyClassToSpawn = nullptr;
+    switch (EnemyType)
+    {
+    case EEnemyType::GoblinMelee:
+        EnemyClassToSpawn = GoblinMeleeEnemyClass;
+        break;
+    case EEnemyType::GoblinRanged:
+        EnemyClassToSpawn = GoblinRangedEnemyClass;
+        break;
+    case EEnemyType::GoblinMagic:
+        EnemyClassToSpawn = GoblinMagicEnemyClass;
+        break;
+    case EEnemyType::GoblinTank:
+        EnemyClassToSpawn = GoblinTankEnemyClass;
+        break;
+    case EEnemyType::GoblinBoss:
+        EnemyClassToSpawn = GoblinBossEnemyClass;
+        break;
+    default:
+        UE_LOG(LogTemp, Error, TEXT("Invalid Enemy Type!"));
+        return;
+    }
+
+    // Ensure there is a valid class to spawn
+    if (!EnemyClassToSpawn) return;
+
+    // Spawn the enemy
+    FActorSpawnParameters SpawnParams;
+    SpawnParams.SpawnCollisionHandlingOverride = ESpawnActorCollisionHandlingMethod::AdjustIfPossibleButAlwaysSpawn;
+    AEnemy* EnemyUnit = GetWorld()->SpawnActor<AEnemy>(EnemyClassToSpawn, RandomTile->GetActorLocation(), FRotator::ZeroRotator, SpawnParams);
+
+    if (EnemyUnit)
+    {
+        // Set the enemy to be an enemy unit
+        EnemyUnit->bIsEnemy = true;
+        EnemyUnit->SetPositionOnGrid(RandomTile);
+        RandomTile->OccupyingUnit = EnemyUnit;
+        RandomTile->bIsOccupied = true; // Ensure tile is marked as occupied
+
+        UE_LOG(LogTemp, Warning, TEXT("Spawned enemy: %s at tile (%d, %d) | World Pos: %s"),
+            *EnemyUnit->GetName(), RandomTile->GridX, RandomTile->GridY, *RandomTile->GetActorLocation().ToString());
+
+        // Confirm the enemy's location
+        FVector EnemyPosition = EnemyUnit->GetActorLocation();
+        UE_LOG(LogTemp, Warning, TEXT("Enemy actual location: %s"), *EnemyPosition.ToString());
+    }
+    else
+    {
+        UE_LOG(LogTemp, Error, TEXT("Enemy spawn failed!"));
+    }
+
+}
+
+
+
+
+
+
+
+AGridTile* AGridManager::GetTileAt(int32 X, int32 Y)
+{
+    for (AGridTile* Tile : GridTiles)
+    {
+        if (Tile->GridX == X && Tile->GridY == Y)
+        {
+            return Tile;
+        }
+    }
+    return nullptr; // No tile found at the given coordinates
+}
+
+
+
+
+
+
+TArray<AGridTile*> AGridManager::GetAdjacentTiles(AGridTile* CenterTile)
+{
+    TArray<AGridTile*> AdjacentTiles;
+    if (!CenterTile) return AdjacentTiles;
+
+    int32 X = CenterTile->GridX;
+    int32 Y = CenterTile->GridY;
+
+    // Loop through adjacent coordinates (4-directional)
+    for (int32 i = -1; i <= 1; i++)
+    {
+        for (int32 j = -1; j <= 1; j++)
+        {
+            if ((i == 0 && j == 0) || (i != 0 && j != 0)) continue; // Skip the center and diagonal tiles
+
+            AGridTile* AdjTile = GetTileAt(X + i, Y + j);
+            if (AdjTile && !AdjTile->bIsOccupied)
+            {
+                AdjacentTiles.Add(AdjTile);
+            }
+        }
+    }
+
+    return AdjacentTiles;
+}
+
+
 
 
 

@@ -3,11 +3,13 @@
 #include "CoreMinimal.h"
 #include "GameFramework/Actor.h"
 #include "GridTile.h"
-#include "GameFramework/SpringArmComponent.h"
 #include "AHero.h"
+#include "TurnManager.h"
+#include "Enemy.h"
+#include "EnemyType.h"
 #include "AGridManager.generated.h"
 
-class AGridUnit;
+class AGameCharacter;
 class AGridTile;
 class AHero;
 
@@ -18,19 +20,16 @@ class STRATEGYRPG_API AGridManager : public AActor
 
 public:
     AGridManager();
-	AHero* SelectedHero;
 
 protected:
     virtual void BeginPlay() override;
-   
 
 public:
     virtual void Tick(float DeltaTime) override;
 
-    #if WITH_EDITOR
-        virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
-    #endif
-
+#if WITH_EDITOR
+    virtual void PostEditChangeProperty(FPropertyChangedEvent& PropertyChangedEvent) override;
+#endif
 
     /** Grid settings */
     UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
@@ -46,14 +45,18 @@ public:
     TSubclassOf<AGridTile> GridTileClass; // The tile to spawn
 
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
-	TArray<AGridTile*> GridTiles; // Array of grid tiles
+    TArray<AGridTile*> GridTiles; // Array of grid tiles
 
     /** The currently selected unit */
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Unit")
-    AGridUnit* SelectedUnit;
+    ACharacter* SelectedUnit;
+
+    /** The currently selected hero */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Selection")
+    AHero* SelectedHero;
 
     // Method to handle unit selection
-    void SelectUnit(AGridUnit* Unit);
+    void SelectUnit(ACharacter *Unit);
 
     /** Handles selecting a hero */
     UFUNCTION(BlueprintCallable, Category = "Selection")
@@ -74,7 +77,6 @@ public:
     UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
     TArray<AGridTile*> ValidMoveTiles; // Stores tiles the hero can move to
 
-
     /** Handles tile selection */
     UFUNCTION(BlueprintCallable, Category = "Grid")
     void HandleTileSelection(AGridTile* SelectedTile);
@@ -83,14 +85,50 @@ public:
     UFUNCTION(BlueprintCallable, Category = "Grid")
     void MoveHeroToTile(AHero* Hero, AGridTile* TargetTile);
 
-	void StartCombat();
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    void StartCombat();
 
-	void EndCombat();
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    void EndCombat();
 
-	/** Combat Mode */
-	UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
-	bool bIsCombatActive;
+    /** Combat Mode */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+    bool bIsCombatActive;
+
+    /** Turn Manager Reference */
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Combat")
+    ATurnManager* TurnManager;
+
+    /** Enemy Spawning */
+    UFUNCTION(BlueprintCallable, Category = "Combat")
+    void SpawnEnemyUnit(EEnemyType EnemyType);
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+    TSubclassOf<AEnemy> GoblinMeleeEnemyClass;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+    TSubclassOf<AEnemy> GoblinRangedEnemyClass;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+    TSubclassOf<AEnemy> GoblinMagicEnemyClass;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+    TSubclassOf<AEnemy> GoblinTankEnemyClass;
+
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Enemy")
+    TSubclassOf<AEnemy> GoblinBossEnemyClass;
+
+    /** Tile Utilities */
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    TArray<AGridTile*> GetAdjacentTiles(AGridTile* CenterTile);
+
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    AGridTile* GetTileAt(int32 X, int32 Y);
+
+    UFUNCTION(BlueprintCallable, Category = "Grid")
+    AGridTile* FindTileAtLocation(FVector Location);
 
 };
+
 
 

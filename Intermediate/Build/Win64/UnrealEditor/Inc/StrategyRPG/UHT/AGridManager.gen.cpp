@@ -11,14 +11,95 @@ void EmptyLinkFunctionForGeneratedCodeAGridManager() {}
 
 // Begin Cross Module References
 COREUOBJECT_API UClass* Z_Construct_UClass_UClass();
+COREUOBJECT_API UScriptStruct* Z_Construct_UScriptStruct_FVector();
 ENGINE_API UClass* Z_Construct_UClass_AActor();
+ENGINE_API UClass* Z_Construct_UClass_ACharacter_NoRegister();
+STRATEGYRPG_API UClass* Z_Construct_UClass_AEnemy_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridManager();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridManager_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AGridTile_NoRegister();
-STRATEGYRPG_API UClass* Z_Construct_UClass_AGridUnit_NoRegister();
 STRATEGYRPG_API UClass* Z_Construct_UClass_AHero_NoRegister();
+STRATEGYRPG_API UClass* Z_Construct_UClass_ATurnManager_NoRegister();
+STRATEGYRPG_API UEnum* Z_Construct_UEnum_StrategyRPG_EEnemyType();
 UPackage* Z_Construct_UPackage__Script_StrategyRPG();
 // End Cross Module References
+
+// Begin Class AGridManager Function EndCombat
+struct Z_Construct_UFunction_AGridManager_EndCombat_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Combat" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_EndCombat_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "EndCombat", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_EndCombat_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_EndCombat_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_AGridManager_EndCombat()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_EndCombat_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execEndCombat)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->EndCombat();
+	P_NATIVE_END;
+}
+// End Class AGridManager Function EndCombat
+
+// Begin Class AGridManager Function FindTileAtLocation
+struct Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics
+{
+	struct GridManager_eventFindTileAtLocation_Parms
+	{
+		FVector Location;
+		AGridTile* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FStructPropertyParams NewProp_Location;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FStructPropertyParams Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::NewProp_Location = { "Location", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Struct, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventFindTileAtLocation_Parms, Location), Z_Construct_UScriptStruct_FVector, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventFindTileAtLocation_Parms, ReturnValue), Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::NewProp_Location,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "FindTileAtLocation", nullptr, nullptr, Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::GridManager_eventFindTileAtLocation_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04820401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::GridManager_eventFindTileAtLocation_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_FindTileAtLocation()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_FindTileAtLocation_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execFindTileAtLocation)
+{
+	P_GET_STRUCT(FVector,Z_Param_Location);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(AGridTile**)Z_Param__Result=P_THIS->FindTileAtLocation(Z_Param_Location);
+	P_NATIVE_END;
+}
+// End Class AGridManager Function FindTileAtLocation
 
 // Begin Class AGridManager Function GenerateGrid
 struct Z_Construct_UFunction_AGridManager_GenerateGrid_Statics
@@ -55,6 +136,114 @@ DEFINE_FUNCTION(AGridManager::execGenerateGrid)
 	P_NATIVE_END;
 }
 // End Class AGridManager Function GenerateGrid
+
+// Begin Class AGridManager Function GetAdjacentTiles
+struct Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics
+{
+	struct GridManager_eventGetAdjacentTiles_Parms
+	{
+		AGridTile* CenterTile;
+		TArray<AGridTile*> ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Tile Utilities */" },
+#endif
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Tile Utilities" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_CenterTile;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue_Inner;
+	static const UECodeGen_Private::FArrayPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::NewProp_CenterTile = { "CenterTile", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetAdjacentTiles_Parms, CenterTile), Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::NewProp_ReturnValue_Inner = { "ReturnValue", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FArrayPropertyParams Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetAdjacentTiles_Parms, ReturnValue), EArrayPropertyFlags::None, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::NewProp_CenterTile,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::NewProp_ReturnValue_Inner,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "GetAdjacentTiles", nullptr, nullptr, Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::GridManager_eventGetAdjacentTiles_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::GridManager_eventGetAdjacentTiles_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_GetAdjacentTiles()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_GetAdjacentTiles_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execGetAdjacentTiles)
+{
+	P_GET_OBJECT(AGridTile,Z_Param_CenterTile);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(TArray<AGridTile*>*)Z_Param__Result=P_THIS->GetAdjacentTiles(Z_Param_CenterTile);
+	P_NATIVE_END;
+}
+// End Class AGridManager Function GetAdjacentTiles
+
+// Begin Class AGridManager Function GetTileAt
+struct Z_Construct_UFunction_AGridManager_GetTileAt_Statics
+{
+	struct GridManager_eventGetTileAt_Parms
+	{
+		int32 X;
+		int32 Y;
+		AGridTile* ReturnValue;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Grid" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FIntPropertyParams NewProp_X;
+	static const UECodeGen_Private::FIntPropertyParams NewProp_Y;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_ReturnValue;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridManager_GetTileAt_Statics::NewProp_X = { "X", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetTileAt_Parms, X), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FIntPropertyParams Z_Construct_UFunction_AGridManager_GetTileAt_Statics::NewProp_Y = { "Y", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Int, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetTileAt_Parms, Y), METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UFunction_AGridManager_GetTileAt_Statics::NewProp_ReturnValue = { "ReturnValue", nullptr, (EPropertyFlags)0x0010000000000580, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventGetTileAt_Parms, ReturnValue), Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_GetTileAt_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetTileAt_Statics::NewProp_X,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetTileAt_Statics::NewProp_Y,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_GetTileAt_Statics::NewProp_ReturnValue,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetTileAt_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_GetTileAt_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "GetTileAt", nullptr, nullptr, Z_Construct_UFunction_AGridManager_GetTileAt_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetTileAt_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_GetTileAt_Statics::GridManager_eventGetTileAt_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_GetTileAt_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_GetTileAt_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_GetTileAt_Statics::GridManager_eventGetTileAt_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_GetTileAt()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_GetTileAt_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execGetTileAt)
+{
+	P_GET_PROPERTY(FIntProperty,Z_Param_X);
+	P_GET_PROPERTY(FIntProperty,Z_Param_Y);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	*(AGridTile**)Z_Param__Result=P_THIS->GetTileAt(Z_Param_X,Z_Param_Y);
+	P_NATIVE_END;
+}
+// End Class AGridManager Function GetTileAt
 
 // Begin Class AGridManager Function GetValidMoves
 struct Z_Construct_UFunction_AGridManager_GetValidMoves_Statics
@@ -318,17 +507,105 @@ DEFINE_FUNCTION(AGridManager::execSelectHero)
 }
 // End Class AGridManager Function SelectHero
 
+// Begin Class AGridManager Function SpawnEnemyUnit
+struct Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics
+{
+	struct GridManager_eventSpawnEnemyUnit_Parms
+	{
+		EEnemyType EnemyType;
+	};
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Combat" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Enemy Spawning */" },
+#endif
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Enemy Spawning" },
+#endif
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FBytePropertyParams NewProp_EnemyType_Underlying;
+	static const UECodeGen_Private::FEnumPropertyParams NewProp_EnemyType;
+	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FBytePropertyParams Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::NewProp_EnemyType_Underlying = { "UnderlyingType", nullptr, (EPropertyFlags)0x0000000000000000, UECodeGen_Private::EPropertyGenFlags::Byte, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, nullptr, METADATA_PARAMS(0, nullptr) };
+const UECodeGen_Private::FEnumPropertyParams Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::NewProp_EnemyType = { "EnemyType", nullptr, (EPropertyFlags)0x0010000000000080, UECodeGen_Private::EPropertyGenFlags::Enum, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(GridManager_eventSpawnEnemyUnit_Parms, EnemyType), Z_Construct_UEnum_StrategyRPG_EEnemyType, METADATA_PARAMS(0, nullptr) }; // 4139264143
+const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::PropPointers[] = {
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::NewProp_EnemyType_Underlying,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::NewProp_EnemyType,
+};
+static_assert(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::PropPointers) < 2048);
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "SpawnEnemyUnit", nullptr, nullptr, Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::PropPointers, UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::PropPointers), sizeof(Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::GridManager_eventSpawnEnemyUnit_Parms), RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::Function_MetaDataParams) };
+static_assert(sizeof(Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::GridManager_eventSpawnEnemyUnit_Parms) < MAX_uint16);
+UFunction* Z_Construct_UFunction_AGridManager_SpawnEnemyUnit()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_SpawnEnemyUnit_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execSpawnEnemyUnit)
+{
+	P_GET_ENUM(EEnemyType,Z_Param_EnemyType);
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->SpawnEnemyUnit(EEnemyType(Z_Param_EnemyType));
+	P_NATIVE_END;
+}
+// End Class AGridManager Function SpawnEnemyUnit
+
+// Begin Class AGridManager Function StartCombat
+struct Z_Construct_UFunction_AGridManager_StartCombat_Statics
+{
+#if WITH_METADATA
+	static constexpr UECodeGen_Private::FMetaDataPairParam Function_MetaDataParams[] = {
+		{ "Category", "Combat" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+#endif // WITH_METADATA
+	static const UECodeGen_Private::FFunctionParams FuncParams;
+};
+const UECodeGen_Private::FFunctionParams Z_Construct_UFunction_AGridManager_StartCombat_Statics::FuncParams = { (UObject*(*)())Z_Construct_UClass_AGridManager, nullptr, "StartCombat", nullptr, nullptr, nullptr, 0, 0, RF_Public|RF_Transient|RF_MarkAsNative, (EFunctionFlags)0x04020401, 0, 0, METADATA_PARAMS(UE_ARRAY_COUNT(Z_Construct_UFunction_AGridManager_StartCombat_Statics::Function_MetaDataParams), Z_Construct_UFunction_AGridManager_StartCombat_Statics::Function_MetaDataParams) };
+UFunction* Z_Construct_UFunction_AGridManager_StartCombat()
+{
+	static UFunction* ReturnFunction = nullptr;
+	if (!ReturnFunction)
+	{
+		UECodeGen_Private::ConstructUFunction(&ReturnFunction, Z_Construct_UFunction_AGridManager_StartCombat_Statics::FuncParams);
+	}
+	return ReturnFunction;
+}
+DEFINE_FUNCTION(AGridManager::execStartCombat)
+{
+	P_FINISH;
+	P_NATIVE_BEGIN;
+	P_THIS->StartCombat();
+	P_NATIVE_END;
+}
+// End Class AGridManager Function StartCombat
+
 // Begin Class AGridManager
 void AGridManager::StaticRegisterNativesAGridManager()
 {
 	UClass* Class = AGridManager::StaticClass();
 	static const FNameNativePtrPair Funcs[] = {
+		{ "EndCombat", &AGridManager::execEndCombat },
+		{ "FindTileAtLocation", &AGridManager::execFindTileAtLocation },
 		{ "GenerateGrid", &AGridManager::execGenerateGrid },
+		{ "GetAdjacentTiles", &AGridManager::execGetAdjacentTiles },
+		{ "GetTileAt", &AGridManager::execGetTileAt },
 		{ "GetValidMoves", &AGridManager::execGetValidMoves },
 		{ "HandleTileSelection", &AGridManager::execHandleTileSelection },
 		{ "HighlightValidMoves", &AGridManager::execHighlightValidMoves },
 		{ "MoveHeroToTile", &AGridManager::execMoveHeroToTile },
 		{ "SelectHero", &AGridManager::execSelectHero },
+		{ "SpawnEnemyUnit", &AGridManager::execSpawnEnemyUnit },
+		{ "StartCombat", &AGridManager::execStartCombat },
 	};
 	FNativeFunctionRegistrar::RegisterFunctions(Class, Funcs, UE_ARRAY_COUNT(Funcs));
 }
@@ -404,6 +681,16 @@ struct Z_Construct_UClass_AGridManager_Statics
 		{ "ToolTip", "The currently selected unit" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_SelectedHero_MetaData[] = {
+		{ "Category", "Selection" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** The currently selected hero */" },
+#endif
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "The currently selected hero" },
+#endif
+	};
 	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_ValidMoveTiles_MetaData[] = {
 		{ "Category", "Grid" },
 		{ "ModuleRelativePath", "Public/AGridManager.h" },
@@ -418,6 +705,36 @@ struct Z_Construct_UClass_AGridManager_Statics
 		{ "ToolTip", "Combat Mode" },
 #endif
 	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_TurnManager_MetaData[] = {
+		{ "Category", "Combat" },
+#if !UE_BUILD_SHIPPING
+		{ "Comment", "/** Turn Manager Reference */" },
+#endif
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+#if !UE_BUILD_SHIPPING
+		{ "ToolTip", "Turn Manager Reference" },
+#endif
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GoblinMeleeEnemyClass_MetaData[] = {
+		{ "Category", "Enemy" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GoblinRangedEnemyClass_MetaData[] = {
+		{ "Category", "Enemy" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GoblinMagicEnemyClass_MetaData[] = {
+		{ "Category", "Enemy" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GoblinTankEnemyClass_MetaData[] = {
+		{ "Category", "Enemy" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
+	static constexpr UECodeGen_Private::FMetaDataPairParam NewProp_GoblinBossEnemyClass_MetaData[] = {
+		{ "Category", "Enemy" },
+		{ "ModuleRelativePath", "Public/AGridManager.h" },
+	};
 #endif // WITH_METADATA
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridWidth;
 	static const UECodeGen_Private::FIntPropertyParams NewProp_GridHeight;
@@ -426,19 +743,32 @@ struct Z_Construct_UClass_AGridManager_Statics
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_GridTiles_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_GridTiles;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectedUnit;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_SelectedHero;
 	static const UECodeGen_Private::FObjectPropertyParams NewProp_ValidMoveTiles_Inner;
 	static const UECodeGen_Private::FArrayPropertyParams NewProp_ValidMoveTiles;
 	static void NewProp_bIsCombatActive_SetBit(void* Obj);
 	static const UECodeGen_Private::FBoolPropertyParams NewProp_bIsCombatActive;
+	static const UECodeGen_Private::FObjectPropertyParams NewProp_TurnManager;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_GoblinMeleeEnemyClass;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_GoblinRangedEnemyClass;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_GoblinMagicEnemyClass;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_GoblinTankEnemyClass;
+	static const UECodeGen_Private::FClassPropertyParams NewProp_GoblinBossEnemyClass;
 	static const UECodeGen_Private::FPropertyParamsBase* const PropPointers[];
 	static UObject* (*const DependentSingletons[])();
 	static constexpr FClassFunctionLinkInfo FuncInfo[] = {
+		{ &Z_Construct_UFunction_AGridManager_EndCombat, "EndCombat" }, // 1814709917
+		{ &Z_Construct_UFunction_AGridManager_FindTileAtLocation, "FindTileAtLocation" }, // 4212980029
 		{ &Z_Construct_UFunction_AGridManager_GenerateGrid, "GenerateGrid" }, // 1901740235
+		{ &Z_Construct_UFunction_AGridManager_GetAdjacentTiles, "GetAdjacentTiles" }, // 2338184442
+		{ &Z_Construct_UFunction_AGridManager_GetTileAt, "GetTileAt" }, // 373640220
 		{ &Z_Construct_UFunction_AGridManager_GetValidMoves, "GetValidMoves" }, // 3656469206
 		{ &Z_Construct_UFunction_AGridManager_HandleTileSelection, "HandleTileSelection" }, // 3614714397
 		{ &Z_Construct_UFunction_AGridManager_HighlightValidMoves, "HighlightValidMoves" }, // 3050622611
 		{ &Z_Construct_UFunction_AGridManager_MoveHeroToTile, "MoveHeroToTile" }, // 3910739066
 		{ &Z_Construct_UFunction_AGridManager_SelectHero, "SelectHero" }, // 2367155386
+		{ &Z_Construct_UFunction_AGridManager_SpawnEnemyUnit, "SpawnEnemyUnit" }, // 2089152102
+		{ &Z_Construct_UFunction_AGridManager_StartCombat, "StartCombat" }, // 2575940222
 	};
 	static_assert(UE_ARRAY_COUNT(FuncInfo) < 2048);
 	static constexpr FCppClassTypeInfoStatic StaticCppClassTypeInfo = {
@@ -452,7 +782,8 @@ const UECodeGen_Private::FFloatPropertyParams Z_Construct_UClass_AGridManager_St
 const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridTileClass = { "GridTileClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridTileClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridTileClass_MetaData), NewProp_GridTileClass_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridTiles_Inner = { "GridTiles", nullptr, (EPropertyFlags)0x0000000000020000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GridTiles = { "GridTiles", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GridTiles), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GridTiles_MetaData), NewProp_GridTiles_MetaData) };
-const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedUnit = { "SelectedUnit", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, SelectedUnit), Z_Construct_UClass_AGridUnit_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedUnit_MetaData), NewProp_SelectedUnit_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedUnit = { "SelectedUnit", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, SelectedUnit), Z_Construct_UClass_ACharacter_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedUnit_MetaData), NewProp_SelectedUnit_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedHero = { "SelectedHero", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, SelectedHero), Z_Construct_UClass_AHero_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_SelectedHero_MetaData), NewProp_SelectedHero_MetaData) };
 const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles_Inner = { "ValidMoveTiles", nullptr, (EPropertyFlags)0x0000000000020000, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, 0, Z_Construct_UClass_AGridTile_NoRegister, METADATA_PARAMS(0, nullptr) };
 const UECodeGen_Private::FArrayPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles = { "ValidMoveTiles", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Array, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, ValidMoveTiles), EArrayPropertyFlags::None, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_ValidMoveTiles_MetaData), NewProp_ValidMoveTiles_MetaData) };
 void Z_Construct_UClass_AGridManager_Statics::NewProp_bIsCombatActive_SetBit(void* Obj)
@@ -460,6 +791,12 @@ void Z_Construct_UClass_AGridManager_Statics::NewProp_bIsCombatActive_SetBit(voi
 	((AGridManager*)Obj)->bIsCombatActive = 1;
 }
 const UECodeGen_Private::FBoolPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_bIsCombatActive = { "bIsCombatActive", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Bool | UECodeGen_Private::EPropertyGenFlags::NativeBool, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, sizeof(bool), sizeof(AGridManager), &Z_Construct_UClass_AGridManager_Statics::NewProp_bIsCombatActive_SetBit, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_bIsCombatActive_MetaData), NewProp_bIsCombatActive_MetaData) };
+const UECodeGen_Private::FObjectPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_TurnManager = { "TurnManager", nullptr, (EPropertyFlags)0x0010000000020015, UECodeGen_Private::EPropertyGenFlags::Object, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, TurnManager), Z_Construct_UClass_ATurnManager_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_TurnManager_MetaData), NewProp_TurnManager_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinMeleeEnemyClass = { "GoblinMeleeEnemyClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GoblinMeleeEnemyClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AEnemy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GoblinMeleeEnemyClass_MetaData), NewProp_GoblinMeleeEnemyClass_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinRangedEnemyClass = { "GoblinRangedEnemyClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GoblinRangedEnemyClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AEnemy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GoblinRangedEnemyClass_MetaData), NewProp_GoblinRangedEnemyClass_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinMagicEnemyClass = { "GoblinMagicEnemyClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GoblinMagicEnemyClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AEnemy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GoblinMagicEnemyClass_MetaData), NewProp_GoblinMagicEnemyClass_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinTankEnemyClass = { "GoblinTankEnemyClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GoblinTankEnemyClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AEnemy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GoblinTankEnemyClass_MetaData), NewProp_GoblinTankEnemyClass_MetaData) };
+const UECodeGen_Private::FClassPropertyParams Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinBossEnemyClass = { "GoblinBossEnemyClass", nullptr, (EPropertyFlags)0x0014000000000005, UECodeGen_Private::EPropertyGenFlags::Class, RF_Public|RF_Transient|RF_MarkAsNative, nullptr, nullptr, 1, STRUCT_OFFSET(AGridManager, GoblinBossEnemyClass), Z_Construct_UClass_UClass, Z_Construct_UClass_AEnemy_NoRegister, METADATA_PARAMS(UE_ARRAY_COUNT(NewProp_GoblinBossEnemyClass_MetaData), NewProp_GoblinBossEnemyClass_MetaData) };
 const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridManager_Statics::PropPointers[] = {
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridWidth,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridHeight,
@@ -468,9 +805,16 @@ const UECodeGen_Private::FPropertyParamsBase* const Z_Construct_UClass_AGridMana
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridTiles_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GridTiles,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedUnit,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_SelectedHero,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles_Inner,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_ValidMoveTiles,
 	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_bIsCombatActive,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_TurnManager,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinMeleeEnemyClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinRangedEnemyClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinMagicEnemyClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinTankEnemyClass,
+	(const UECodeGen_Private::FPropertyParamsBase*)&Z_Construct_UClass_AGridManager_Statics::NewProp_GoblinBossEnemyClass,
 };
 static_assert(UE_ARRAY_COUNT(Z_Construct_UClass_AGridManager_Statics::PropPointers) < 2048);
 UObject* (*const Z_Construct_UClass_AGridManager_Statics::DependentSingletons[])() = {
@@ -513,10 +857,10 @@ AGridManager::~AGridManager() {}
 struct Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_Statics
 {
 	static constexpr FClassRegisterCompiledInInfo ClassInfo[] = {
-		{ Z_Construct_UClass_AGridManager, AGridManager::StaticClass, TEXT("AGridManager"), &Z_Registration_Info_UClass_AGridManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridManager), 441800602U) },
+		{ Z_Construct_UClass_AGridManager, AGridManager::StaticClass, TEXT("AGridManager"), &Z_Registration_Info_UClass_AGridManager, CONSTRUCT_RELOAD_VERSION_INFO(FClassReloadVersionInfo, sizeof(AGridManager), 1067733970U) },
 	};
 };
-static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_4095530512(TEXT("/Script/StrategyRPG"),
+static FRegisterCompiledInInfo Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_250501291(TEXT("/Script/StrategyRPG"),
 	Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_Statics::ClassInfo, UE_ARRAY_COUNT(Z_CompiledInDeferFile_FID_Users_rossm_Downloads_Eryndor_Shattered_Essence_master_Eryndor_Shattered_Essence_master_Source_StrategyRPG_Public_AGridManager_h_Statics::ClassInfo),
 	nullptr, 0,
 	nullptr, 0);

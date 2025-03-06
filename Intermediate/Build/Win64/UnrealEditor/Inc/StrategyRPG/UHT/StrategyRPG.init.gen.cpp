@@ -17,13 +17,13 @@ void EmptyLinkFunctionForGeneratedCodeStrategyRPG_init() {}
 				nullptr,
 				0,
 				PKG_CompiledIn | 0x00000000,
-				0x4535BE6A,
-				0x3DBE7CBB,
+				0x1E14DFB3,
+				0xE408E1AC,
 				METADATA_PARAMS(0, nullptr)
 			};
 			UECodeGen_Private::ConstructUPackage(Z_Registration_Info_UPackage__Script_StrategyRPG.OuterSingleton, PackageParams);
 		}
 		return Z_Registration_Info_UPackage__Script_StrategyRPG.OuterSingleton;
 	}
-	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_StrategyRPG(Z_Construct_UPackage__Script_StrategyRPG, TEXT("/Script/StrategyRPG"), Z_Registration_Info_UPackage__Script_StrategyRPG, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x4535BE6A, 0x3DBE7CBB));
+	static FRegisterCompiledInInfo Z_CompiledInDeferPackage_UPackage__Script_StrategyRPG(Z_Construct_UPackage__Script_StrategyRPG, TEXT("/Script/StrategyRPG"), Z_Registration_Info_UPackage__Script_StrategyRPG, CONSTRUCT_RELOAD_VERSION_INFO(FPackageReloadVersionInfo, 0x1E14DFB3, 0xE408E1AC));
 PRAGMA_ENABLE_DEPRECATION_WARNINGS

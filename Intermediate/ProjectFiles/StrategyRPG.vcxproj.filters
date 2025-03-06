@@ -66,28 +66,46 @@
     <Filter Include="Source\StrategyRPG\Private">
       <UniqueIdentifier>{D12FF939-8607-3CC9-A277-FBF3AF77915A}</UniqueIdentifier>
     </Filter>
-    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridManager.cpp">
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGameCharacter.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridUnit.cpp">
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\AGridManager.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Private\AHero.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\Enemy.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\EnemyType.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Private\GridTile.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\TurnManager.cpp">
+      <Filter>Source\StrategyRPG\Private</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Private\TurnOrderWidget.cpp">
       <Filter>Source\StrategyRPG\Private</Filter>
     </ClCompile>
     <Filter Include="Source\StrategyRPG\Public">
       <UniqueIdentifier>{92AA3517-C28C-37F5-9891-D2FEE3A31613}</UniqueIdentifier>
     </Filter>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\AGameCharacter.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\AGridManager.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\StrategyRPG\Public\AGridUnit.h">
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\AHero.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
-    <ClCompile Include="..\..\Source\StrategyRPG\Public\AHero.h">
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\Enemy.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\EnemyType.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\FactionTypes.h">
@@ -97,6 +115,12 @@
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
     <ClCompile Include="..\..\Source\StrategyRPG\Public\HeroTypes.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\TurnManager.h">
+      <Filter>Source\StrategyRPG\Public</Filter>
+    </ClCompile>
+    <ClCompile Include="..\..\Source\StrategyRPG\Public\TurnOrderWidget.h">
       <Filter>Source\StrategyRPG\Public</Filter>
     </ClCompile>
   </ItemGroup>

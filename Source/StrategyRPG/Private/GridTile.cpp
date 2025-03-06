@@ -4,8 +4,8 @@
 #include "Kismet/GameplayStatics.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
-
-
+#include "Engine/DecalActor.h"
+#include "Materials/MaterialInterface.h"
 
 // Constructor
 AGridTile::AGridTile()
@@ -25,43 +25,16 @@ AGridTile::AGridTile()
     GridX = 0;
     GridY = 0;
     TileType = EGridTileType::Custom;
-
+    OccupyingUnit = nullptr;
     bIsOccupied = false;
-    bIsWalkable = true;  // Default setting
+    bIsWalkable = true;
 }
-
-
-
-
-
-
-
 
 // Called when the game starts or when spawned
 void AGridTile::BeginPlay()
 {
     Super::BeginPlay();
-
 }
-
-
-
-
-
-
-
-
-// Called every frame (currently unused)
-void AGridTile::Tick(float DeltaTime)
-{
-    Super::Tick(DeltaTime);
-}
-
-
-
-
-
-
 
 // Initializes the tile with a position and type
 void AGridTile::InitializeTile(int32 X, int32 Y, EGridTileType Type)
@@ -73,38 +46,22 @@ void AGridTile::InitializeTile(int32 X, int32 Y, EGridTileType Type)
     // Move tile to the correct world position
     SetActorLocation(FVector(GridX * 100.0f, GridY * 100.0f, 0.0f));
 
-    // Apply tile-specific settings
-    SetTileType(TileType);
-
     UE_LOG(LogTemp, Warning, TEXT("Initialized Tile at [%d, %d]"), GridX, GridY);
 }
 
-
-
-
-
-
-
-
-// Function to change tile properties based on type
-void AGridTile::SetTileType(EGridTileType NewType)
+// Assign a unit to this tile
+void AGridTile::SetOccupyingUnit(AGameCharacter* NewUnit)
 {
-    TileType = NewType;
-
+    OccupyingUnit = Cast<ACharacter>(NewUnit);
+    bIsOccupied = (NewUnit != nullptr);
 }
 
-
-
-
-
-
-
-
-
+// Function to get the navigation path from AI to target
 UNavigationPath* AGridTile::GetNavigationPath(AActor* StartActor, AActor* EndActor)
 {
     if (!StartActor || !EndActor)
     {
+        UE_LOG(LogTemp, Error, TEXT("GetNavigationPath: Invalid StartActor or EndActor!"));
         return nullptr;
     }
 
@@ -114,49 +71,10 @@ UNavigationPath* AGridTile::GetNavigationPath(AActor* StartActor, AActor* EndAct
         return nullptr;
     }
 
-    return NavSystem->FindPathToActorSynchronously(GetWorld(), StartActor->GetActorLocation(), EndActor);
+    return NavSystem->FindPathToLocationSynchronously(GetWorld(), StartActor->GetActorLocation(), EndActor->GetActorLocation());
 }
 
-
-
-
-
-
-
-
-void AGridTile::SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile)
-{
-    AGridManager* GridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
-    if (!GridManager || !GridManager->bIsCombatActive) return; // Only spawn footprints during combat
-
-    UNavigationPath* Path = GetNavigationPath(AIActor, TargetTile);
-    if (!Path || Path->PathPoints.Num() < 2)
-    {
-        return;
-    }
-
-    for (const FVector& Point : Path->PathPoints)
-    {
-        // Spawn decal at each point
-        UDecalComponent* Footprint = NewObject<UDecalComponent>(this);
-        if (Footprint)
-        {
-            Footprint->RegisterComponent();
-            Footprint->SetWorldLocation(Point);
-            Footprint->SetWorldRotation(FRotator(-90.0f, 0.0f, 0.0f));  // Face downward
-            Footprint->SetDecalMaterial(FootprintMaterial);  // Assign footprint material
-            Footprint->SetFadeOut(3.0f, 1.0f);  // Optional: Makes footprints disappear over time
-        }
-    }
-}
-
-
-
-
-
-
-
-
+// Handle tile selection
 void AGridTile::NotifyActorOnClicked(FKey ButtonPressed)
 {
     Super::NotifyActorOnClicked(ButtonPressed);
@@ -164,22 +82,61 @@ void AGridTile::NotifyActorOnClicked(FKey ButtonPressed)
     AGridManager* GridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
     if (!GridManager || !GridManager->bIsCombatActive) return; // Prevent tile selection if not in combat
 
-   
-    if (GridManager)
-    {
-        GridManager->HandleTileSelection(this);
-    }
-
-    // Ensure tile collision remains intact
-    TileMesh->SetCollisionEnabled(ECollisionEnabled::QueryAndPhysics);
+    GridManager->HandleTileSelection(this);
 }
 
-
-
-
-
-
+// Check if tile is valid for movement
 bool AGridTile::IsValidMoveTile() const
 {
     return !bIsOccupied && bIsWalkable;
+}
+
+// Function to set tile properties based on type
+void AGridTile::SetTileType(EGridTileType NewType)
+{
+    TileType = NewType;
+    UE_LOG(LogTemp, Warning, TEXT("Tile type changed to: %d"), static_cast<int32>(NewType));
+}
+
+// Function to spawn footprints along the AI path
+void AGridTile::SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile)
+{
+    AGridManager* GridManager = Cast<AGridManager>(UGameplayStatics::GetActorOfClass(GetWorld(), AGridManager::StaticClass()));
+    if (!GridManager || !GridManager->bIsCombatActive) return; // Only spawn footprints during combat
+
+    UNavigationPath* Path = UNavigationSystemV1::GetCurrent(GetWorld())->FindPathToLocationSynchronously(GetWorld(), AIActor->GetActorLocation(), TargetTile->GetActorLocation());
+    if (!Path || Path->PathPoints.Num() < 2)
+    {
+        return;
+    }
+
+    for (const FVector& Point : Path->PathPoints)
+    {
+        // Check if a footprint already exists at this point
+        TArray<AActor*> OverlappingActors;
+        UGameplayStatics::GetAllActorsOfClass(GetWorld(), ADecalActor::StaticClass(), OverlappingActors);
+
+        bool bAlreadyExists = false;
+        for (AActor* Actor : OverlappingActors)
+        {
+            if (Actor->GetActorLocation().Equals(Point, 10.0f))
+            {
+                bAlreadyExists = true;
+                break;
+            }
+        }
+
+        if (!bAlreadyExists)
+        {
+            UDecalComponent* Footprint = NewObject<UDecalComponent>(this);
+            if (Footprint)
+            {
+                Footprint->RegisterComponent();
+                Footprint->SetWorldLocation(Point);
+                Footprint->SetWorldRotation(FRotator(-90.0f, 0.0f, 0.0f));  // Face downward
+                Footprint->SetDecalMaterial(FootprintMaterial);  // Assign footprint material
+                Footprint->SetFadeOut(3.0f, 1.0f);  // Optional: Makes footprints disappear over time
+            }
+        }
+    }
 }

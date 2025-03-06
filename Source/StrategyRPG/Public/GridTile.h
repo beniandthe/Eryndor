@@ -1,24 +1,25 @@
 #pragma once
 
 #include "CoreMinimal.h"
+#include "GameFramework/Actor.h"
+#include "AGameCharacter.h"
 #include "NavigationSystem.h"
 #include "NavigationPath.h"
 #include "Components/DecalComponent.h"
-#include "GameFramework/Actor.h"
+#include "GameFramework/Character.h"
 #include "GridTile.generated.h"
-
 
 UENUM(BlueprintType)
 enum class EGridTileType : uint8
 {
     Snow     UMETA(DisplayName = "Snow"),
-    Forest    UMETA(DisplayName = "Forest"),
-    Mountain  UMETA(DisplayName = "Mountain"),
-    Water     UMETA(DisplayName = "Water"),
-    Swamp     UMETA(DisplayName = "Swamp"),
-    Desert    UMETA(DisplayName = "Desert"),
-    Road      UMETA(DisplayName = "Road"),
-    Custom    UMETA(DisplayName = "Custom")
+    Forest   UMETA(DisplayName = "Forest"),
+    Mountain UMETA(DisplayName = "Mountain"),
+    Water    UMETA(DisplayName = "Water"),
+    Swamp    UMETA(DisplayName = "Swamp"),
+    Desert   UMETA(DisplayName = "Desert"),
+    Road     UMETA(DisplayName = "Road"),
+    Custom   UMETA(DisplayName = "Custom")
 };
 
 UCLASS()
@@ -27,66 +28,54 @@ class STRATEGYRPG_API AGridTile : public AActor
     GENERATED_BODY()
 
 public:
-    // Constructor
     AGridTile();
 
-    // Function to spawn footprints along the AI path
-    void SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile);
-
-    UPROPERTY(BlueprintReadWrite, EditAnywhere, Category = "Combat")
-    bool bIsCombatActive; // Reference to determine if movement is grid-based
-
-
-protected:
-    virtual void BeginPlay() override;
-
-    // Function to get the navigation path from AI to target
-    UNavigationPath* GetNavigationPath(AActor* StartActor, AActor* EndActor);
-
-    // Reference to the material for footprints
-    UPROPERTY(EditDefaultsOnly, Category = "Footprints")
-    UMaterialInterface* FootprintMaterial;
-
-public:
-    virtual void Tick(float DeltaTime) override;
-
-    /** Mesh component for the tile */
-    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Tile")
-    UStaticMeshComponent* TileMesh;
-
-    /** Grid Position */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
+    // Grid coordinates
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
     int32 GridX;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
     int32 GridY;
 
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile")
-    FVector GridPosition;
+    // Unit occupying this tile
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+    ACharacter* OccupyingUnit;
 
-    /** Whether the tile is occupied by a unit */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
-    bool bIsOccupied;
-
-    /** Determines if the tile is walkable */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
-    bool bIsWalkable = true;
-
-    /** Tile Type Enum (Visible in Blueprints) */
-    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Tile Properties")
+    // Tile type
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
     EGridTileType TileType;
 
-    /** Initializes the tile's position and type */
+    // Whether the tile is occupied
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+    bool bIsOccupied;
+
+    // Whether the tile is walkable
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+    bool bIsWalkable;
+
+    // Tile mesh
+    UPROPERTY(VisibleAnywhere, BlueprintReadOnly, Category = "Grid")
+    UStaticMeshComponent* TileMesh;
+
+    // Footprint material
+    UPROPERTY(EditAnywhere, BlueprintReadWrite, Category = "Grid")
+    UMaterialInterface* FootprintMaterial;
+
+    virtual void BeginPlay() override;
+
     void InitializeTile(int32 X, int32 Y, EGridTileType Type);
 
-    /** Function to Set Tile Properties Based on Type */
-    UFUNCTION(BlueprintCallable, Category = "Tile")
-    void SetTileType(EGridTileType NewType);
+    void SetOccupyingUnit(AGameCharacter* NewUnit);
 
-    /** Handle Click Event */
+    UNavigationPath* GetNavigationPath(AActor* StartActor, AActor* EndActor);
+
     virtual void NotifyActorOnClicked(FKey ButtonPressed) override;
 
     bool IsValidMoveTile() const;
+
+    void SetTileType(EGridTileType NewType);
+
+    void SpawnFootprintsAlongPath(AActor* AIActor, AActor* TargetTile);
 };
 
 
